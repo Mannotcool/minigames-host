@@ -1,2 +1,2 @@
 # minigames-host
-Create minigame invite-link's and play quick minigames among friends.
+Create minigame invite-links and play quick minigames among friends.
