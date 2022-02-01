@@ -44,7 +44,9 @@
         </div>
 
         <script>
-            //get code from url, process it, then attempt to connect to the lobby
+            const url = window.location.href;
+            let code = url.split('?code=').pop();
+            console.log(code); //use this code to connect to the socket.io server
         </script>
     </body>
 </html>
