@@ -51,12 +51,12 @@
     <body>
         <div class="container">
             <div class="create">
-                <a href="gameselect.html"><button style="margin: 50px;" class="creategame">Create Game</button></a>
+                <a href="code/gameselect.html"><button style="margin: 50px;" class="creategame">Create Game</button></a>
             </div>
             <div class="join" style="text-align: center;">
-                <form method="GET" action="loading.html">
-                    <h4>Join A Room</h4>
-                    <input style="text-align: center;" class="codeinput" name="code" type="text" placeholder="6-Digit Room Code" maxlength="6" minlength="6">
+                <form method="GET" action="code/loading.html">
+                    <h4>Join A Room<br>(uppercase, lowercase, and numbers only)</h4>
+                    <input style="text-align: center;" class="codeinput" name="code" type="text" pattern="^[A-Za-z0-9_-]*$" placeholder="6-Digit Room Code" maxlength="6" minlength="6">
                     <br>
                     <input type="submit" class="joingame" value="Join Game">
                 </form>

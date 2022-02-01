@@ -43,10 +43,22 @@
             <div class="loader"></div>
         </div>
 
-        <script>
+        <script src="/serverside/node_modules/socket.io-client/dist/socket.io.js"></script>
+        <script type="module">
+            //import {io} from '/serverside/node_modules/socket.io-client/dist/socket.io.js';
+
             const url = window.location.href;
             let code = url.split('?code=').pop();
-            console.log(code); //use this code to connect to the socket.io server
+
+
+            const socket = io('http://localhost:3000');
+
+            socket.on('connect', () => {
+                socket.emit('join', code);
+                socket.on('joined', code1 => {
+                        window.location.href = '/lobby.html?code='+code1;
+                });
+            });
         </script>
     </body>
 </html>
