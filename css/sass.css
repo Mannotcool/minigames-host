@@ -11147,7 +11147,7 @@ textarea.form-control-lg {
   --bs-gray-700: #495057;
   --bs-gray-800: #343a40;
   --bs-gray-900: #212529;
-  --bs-primary: #6a85b6;
+  --bs-primary: #484b6a;
   --bs-danger: #ff4136;
   --bs-primary-rgb: 13, 110, 253;
   --bs-secondary-rgb: 108, 117, 125;
@@ -14040,33 +14040,33 @@ textarea.form-control-lg {
 }
 
 .btn-primary {
-  color: #000;
-  background-color: #6a85b6;
-  border-color: #6a85b6;
+  color: #fff;
+  background-color: #484b6a;
+  border-color: #484b6a;
 }
 .btn-primary:hover {
-  color: #000;
-  background-color: #8097c1;
-  border-color: #7991bd;
+  color: #fff;
+  background-color: #3d405a;
+  border-color: #3a3c55;
 }
 .btn-check:focus + .btn-primary, .btn-primary:focus {
-  color: #000;
-  background-color: #8097c1;
-  border-color: #7991bd;
-  box-shadow: 0 0 0 0.25rem rgba(90, 113, 155, 0.5);
+  color: #fff;
+  background-color: #3d405a;
+  border-color: #3a3c55;
+  box-shadow: 0 0 0 0.25rem rgba(99, 102, 128, 0.5);
 }
 .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
-  color: #000;
-  background-color: #889dc5;
-  border-color: #7991bd;
+  color: #fff;
+  background-color: #3a3c55;
+  border-color: #363850;
 }
 .btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(90, 113, 155, 0.5);
+  box-shadow: 0 0 0 0.25rem rgba(99, 102, 128, 0.5);
 }
 .btn-primary:disabled, .btn-primary.disabled {
-  color: #000;
-  background-color: #6a85b6;
-  border-color: #6a85b6;
+  color: #fff;
+  background-color: #484b6a;
+  border-color: #484b6a;
 }
 
 .btn-danger {
@@ -14100,27 +14100,27 @@ textarea.form-control-lg {
 }
 
 .btn-outline-primary {
-  color: #6a85b6;
-  border-color: #6a85b6;
+  color: #484b6a;
+  border-color: #484b6a;
 }
 .btn-outline-primary:hover {
-  color: #000;
-  background-color: #6a85b6;
-  border-color: #6a85b6;
+  color: #fff;
+  background-color: #484b6a;
+  border-color: #484b6a;
 }
 .btn-check:focus + .btn-outline-primary, .btn-outline-primary:focus {
-  box-shadow: 0 0 0 0.25rem rgba(106, 133, 182, 0.5);
+  box-shadow: 0 0 0 0.25rem rgba(72, 75, 106, 0.5);
 }
 .btn-check:checked + .btn-outline-primary, .btn-check:active + .btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show {
-  color: #000;
-  background-color: #6a85b6;
-  border-color: #6a85b6;
+  color: #fff;
+  background-color: #484b6a;
+  border-color: #484b6a;
 }
 .btn-check:checked + .btn-outline-primary:focus, .btn-check:active + .btn-outline-primary:focus, .btn-outline-primary:active:focus, .btn-outline-primary.active:focus, .btn-outline-primary.dropdown-toggle.show:focus {
-  box-shadow: 0 0 0 0.25rem rgba(106, 133, 182, 0.5);
+  box-shadow: 0 0 0 0.25rem rgba(72, 75, 106, 0.5);
 }
 .btn-outline-primary:disabled, .btn-outline-primary.disabled {
-  color: #6a85b6;
+  color: #484b6a;
   background-color: transparent;
 }
 
@@ -15613,12 +15613,12 @@ textarea.form-control-lg {
 }
 
 .alert-primary {
-  color: #40506d;
-  background-color: #e1e7f0;
-  border-color: #d2dae9;
+  color: #2b2d40;
+  background-color: #dadbe1;
+  border-color: #c8c9d2;
 }
 .alert-primary .alert-link {
-  color: #334057;
+  color: #222433;
 }
 
 .alert-danger {
@@ -15898,17 +15898,17 @@ textarea.form-control-lg {
 }
 
 .list-group-item-primary {
-  color: #40506d;
-  background-color: #e1e7f0;
+  color: #2b2d40;
+  background-color: #dadbe1;
 }
 .list-group-item-primary.list-group-item-action:hover, .list-group-item-primary.list-group-item-action:focus {
-  color: #40506d;
-  background-color: #cbd0d8;
+  color: #2b2d40;
+  background-color: #c4c5cb;
 }
 .list-group-item-primary.list-group-item-action.active {
   color: #fff;
-  background-color: #40506d;
-  border-color: #40506d;
+  background-color: #2b2d40;
+  border-color: #2b2d40;
 }
 
 .list-group-item-danger {
@@ -16925,10 +16925,10 @@ textarea.form-control-lg {
 }
 
 .link-primary {
-  color: #6a85b6;
+  color: #484b6a;
 }
 .link-primary:hover, .link-primary:focus {
-  color: #889dc5;
+  color: #3a3c55;
 }
 
 .link-danger {
