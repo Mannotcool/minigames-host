@@ -10,7 +10,7 @@ console.log("Server started");
 io.on("connection", socket => {
     socket.on("join", code => {
         socket.join(code);
-        socket.emit('joined', code);
+        socket.broadcast.to(socket.id).emit('joined', code);
         console.log(`Client ${socket.id} joined room ${code}`);
     });
 });
