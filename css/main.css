@@ -1,0 +1,59 @@
+.indexbody {
+    font-family: 'Proxima Soft';
+    color: #fcfcfc;
+    background-image: linear-gradient(to right, #8860d0 30%, #5ab9ea 100%);
+}
+
+.gamecontainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.playgame {
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    background-color: #c1c8e4;
+    border: 1px solid #c1c8e4;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #5680e9;
+}
+
+.playgame:hover {
+    background-color: #c1c8e4;
+    box-shadow: 0 0 5px #5680e9;
+    border: 1px solid #c1c8e4;
+}
+
+.gametitle {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 10px;
+}
+
+.glow {
+    color: #fcfcfc;
+    font-size: 40px;
+    text-align: center;
+    transition: all 5s ease-in-out;
+}
+
+.glow:hover {
+    -webkit-animation: glow 3s ease-in-out infinite alternate;
+    -moz-animation: glow 3s ease-in-out infinite alternate;
+    animation: glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px #fcfcfc, 0 0 20px #fcfcfc, 0 0 30px #5680e9, 0 0 40px #5680e9, 0 0 50px #5680e9, 0 0 60px #5680e9, 0 0 70px #5680e9;
+        box-shadow: 0 0 10px #fcfcfc, 0 0 20px #fcfcfc, 0 0 30px #5680e9, 0 0 40px #5680e9, 0 0 50px #5680e9, 0 0 60px #5680e9, 0 0 70px #5680e9;
+    }
+    to {
+        text-shadow: 0 0 20px #fcfcfc, 0 0 30px #fcfcfc, 0 0 40px #8860d0, 0 0 50px #8860d0, 0 0 60px #8860d0, 0 0 70px #8860d0, 0 0 80px #8860d0;
+        box-shadow: 0 0 20px #fcfcfc, 0 0 30px #fcfcfc, 0 0 40px #8860d0, 0 0 50px #8860d0, 0 0 60px #8860d0, 0 0 70px #8860d0, 0 0 80px #8860d0;
+    }
+}
