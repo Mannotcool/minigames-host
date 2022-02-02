@@ -7,19 +7,37 @@ const io = require("socket.io")(3000, {
 
 console.log("Server started");
 
-function getActiveRooms() {
-    console.log(io.sockets.adapter.rooms);
-    return;
-}
+var rooms = [];
 
 io.on("connection", socket => {
-    socket.on("join", code => {
+    socket.on("roomQuery", code => {
+        for (var i = 0; i < rooms.length; i++) {
+            if (rooms[i][0] == code) {
+                //true if room exists. else false
+                socket.join(code);
+                io.to(socket.id).emit('roomQueryResp', true);
+                console.log("Client "+socket.id+" joined room "+code);
+                return;
+            }
+        }
+        io.to(socket.id).emit('roomQueryResp', false);
+    });
+
+    socket.on("roomCreate", code => {
         socket.join(code);
+        rooms.push([code, socket.id]);
+        console.log("Client "+socket.id+" created room "+code);
+    });
 
-        socket.emit("joined");
+    socket.on("disconnect", () => {
+        for (var i = 0; i < rooms.length; i++) {
+            if (rooms[i][1] == socket.id) {
+                console.log("Client "+socket.id+" left room "+rooms[i][0]);
+                rooms.splice(i, 1);
+                return;
+            }
+        }
 
-        io.to(socket.id).emit('joined');
-        console.log(`Client ${socket.id} joined room ${code}`);
-        console.log(getActiveRooms());
+        console.log("Client "+socket.id+" disconnected");
     });
 });
