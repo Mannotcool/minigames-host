@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lobby</title>
+    </head>
+    <body>
+
+        <script src="/serverside/node_modules/socket.io-client/dist/socket.io.js"></script>
+        <script type="module">
+            const url = window.location.href;
+            var code = url.split('?code=').pop();
+
+            const socket = io.connect('http://localhost:3000');
+
+            socket.on('connect', () => {
+                socket.emit('roomQuery', code);
+
+                socket.on('roomQueryResp', data => {
+                    if (data != true) {
+                        alert("Room does not exist.");
+                        window.location.href = "index.html";
+                        return;
+                    }
+
+                    var title = document.createElement("h1");
+                    title.innerText = "Welcome to lobby "+code+"! Please wait for the game to start.";
+                    document.body.appendChild(title);
+                });
+            });
+        </script>
+    </body>
+</html>
