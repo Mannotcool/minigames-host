@@ -1,15 +1,16 @@
 const io = require("socket.io")(3000, {
     //set this so cors doesnt block connection to the server
     cors: {
-        origin: ['http://localhost:8080'],
+        origin: ['http://127.0.0.1:5500']
     },
 });
 
-console.log("Server started");
+
 
 var rooms = [];
 
 io.on("connection", socket => {
+    console.log("Server started");
     socket.on("roomQuery", code => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == code) {
