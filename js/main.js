@@ -31,7 +31,7 @@ jQuery(function ($) {
 
 });
 
-// Enables the Copy to Cliboard button
+// Enables the Copy to Clipboard button
 
 function copyToClipboard(text) {
 

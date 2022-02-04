@@ -3,7 +3,7 @@ End-User License Agreement
 
 ## Last updated: 2022-02-03
 
-This End-User License Agreement (referred to as the "EULA") is a legally binding agreement between you, the Licensee, an individual customer or entity, and the minigames.host, the company, and the author of minigames.host, the Software, which may include associated media, printed materials, and online or electronic documentation. This Agreement is a legally binding contract that includes terms that limit your legal rights and Licensors' liability to you, and shall govern all access to and use of this Software. You hereby agree, without limitation or alteration, to all the terms and conditions contained herein.
+This End-User License Agreement (referred to as the "EULA") is a legally binding agreement between you, the Licensee, an individual customer or entity, and minigames.host, the company, and the author of minigames.host, the Software, which may include associated media, printed materials, and online or electronic documentation. This Agreement is a legally binding contract that includes terms that limit your legal rights and Licensors' liability to you, and shall govern all access to and use of this Software. You hereby agree, without limitation or alteration, to all the terms and conditions contained herein.
 
 By installing, copying, or otherwise using the Licensed Product (Software), the Licensee agrees to be bound by the terms and conditions outlined in this EULA. However, if the Licensee does not agree to the terms and conditions outlined in this EULA, the said Licensee may not download, install, or use Software.
 
@@ -13,7 +13,7 @@ By installing, copying, or otherwise using the Licensed Product (Software), the 
 
 "Licensee" shall refer to the individual or entity that downloads and uses the Software.
 
-"Licensor" shall refer to the company or author, minigames.host, located at [ADDRESS OF LICENSOR].
+"Licensor" shall refer to the company or author, minigames.host.
 
  "Software/Licensed product" shall mean minigames.host, the Licensed Product provided pursuant to this EULA.
 

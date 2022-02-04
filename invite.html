@@ -17,10 +17,10 @@
                 socket.on('roomQueryResp', data => {
                     if (data == true) {
                         var title = document.createElement("h1");
-                        title.innerText = "Welcome to lobby "+code;
+                        title.innerText = "Welcome to lobby "+code+"! Please wait for the game to start.";
                         document.body.appendChild(title);
                     } else {
-                        alert("Room does not exist, creating room!");
+                        alert("Room does not exist, creating room.");
                         window.location.href = "/lobby/mlobby.html";
                     }
                 });

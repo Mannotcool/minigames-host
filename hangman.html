@@ -9,12 +9,7 @@
         <link href="css/sass.css" rel="stylesheet"/>
     </head>
     <body>
-        <div class="input-group mb-3">
-            <input type="text" readonly class="form-control"  value="" aria-describedby="button-addon2" id="inviteurl">
-            <button class="btn btn-outline-primary" type="button" id="button-addon2">Copy</button>
-        </div>
-
-        <div class="container">
+        <div id="container">
             <br>
             <div class="input-group mb-3">
                 <input type="text" readonly class="form-control"  value="" aria-describedby="button-addon2" id="inviteurl">
@@ -31,34 +26,62 @@
               <button class="btn btn-info" onClick="reset()">Reset</button>
             </div> 
         </div>
-        <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
-        <script src="js/hangman.js"></script>
-        <script>
-            const socket = io.connect('http://localhost:3000');
-    
-            socket.on('connect', () => {
-                var randCode = Math.floor(100000 + Math.random() * 900000);
-                socket.emit('roomCreate', randCode);
-                inviteurl = document.getElementById("inviteurl");
-                inviteurl.value = "http://127.0.0.1:5500/invite.html?code=" + randCode;
-    
-            }); 
-        </script>
-        <script src="/js/main.js"></script>
+
+        
+        <script src="/js/hangman.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 
         <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
         <script src="js/main.js"></script>
-        <script>
+        <script type="module">
+            const containerAll = document.getElementById("container");
             const socket = io.connect('http://localhost:3000');
+
 
             socket.on('connect', () => {
                 var randCode = Math.floor(100000 + Math.random() * 900000);
                 socket.emit('roomQuery', randCode);
-                var inviteurl = document.getElementById("inviteurl");
-                inviteurl.value = "http://127.0.0.1:5500/invite.html?code=" + randCode;
-            }); 
+                socket.on("roomQueryResp", data => {
+                    if (data == false) {
+                        var startButton = document.createElement("button");
+                        startButton.innerText = "Start Game";
+                        startButton.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
+                        document.body.appendChild(startButton);
+
+                        containerAll.style.filter = "blur(5px)";
+
+
+                        //put an interval timer here that blocks until exited
+                            console.log("test");
+
+                            if (startButton.clicked == true) break;
+                            
+
+                            socket.on("playerJoin", data => {
+                                socket.emit("sendData", randCode);
+                                socket.on("sentData", data => {
+                                    var numOfPlayers = data[1].length;
+                                    console.log(numOfPlayers);
+                                });
+                            });
+                            sleep(300);
+                        //end
+                        console.log("what?");
+
+
+                        containerAll.style = "";
+                        document.body.removeChild(startButton);
+
+                        var inviteurl = document.getElementById("inviteurl");
+                        inviteurl.value = "http://127.0.0.1:5500/invite.html?code=" + randCode;
+
+                    } else {
+                        alert("An error occoured. Redirecting...");
+                        window.location.href = "index.html";
+                    }
+                });
+            });
         </script>
     </body>
 </html>
