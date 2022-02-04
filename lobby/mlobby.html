@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lobby - minigames-host</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link href="/css/anim.css" rel="stylesheet"/>
     <link href="/css/sass.css" rel="stylesheet"/>
     <link href="/css/main.css" rel="stylesheet"/>
 </head>
@@ -15,10 +14,6 @@
     <div class="container d-flex flex-column w-50 p-3 vh-100 justify-content-center align-items-center row row-cols-1 d-flex align-items-center justify-content-center">
         <h1>Lobby | minigames.host</h1>
         <br>
-        <div class="input-group mb-3">
-            <input type="text" readonly class="form-control"  value="" aria-describedby="button-addon2" id="inviteurl">
-            <button class="btn btn-outline-primary" type="button" id="button-addon2">Copy</button>
-        </div>
         <hr>
         <div class="containergallery">
             <div class="box">
@@ -26,7 +21,7 @@
               <span>Tic Tac Toe!</span>
             </div>
             <div class="box">
-              <a href="/twotruthsandlie.html"><img src="/assets/demo/2 truths and lie.png"></a>
+              <a href="/twotruthsandlie.html"><img src="/assets/demo/2-truths-and-lie.png"></a>
               <span>2 Truths and a Lie</span>
             </div>
             <div class="box">
@@ -36,18 +31,6 @@
           </div>
     <footer style="color: #bebebe;">Check us out on <a style="color: #bebebe;" href="https://github.com/Mannotcool/minigames-host">GitHub</a>. By using this site, you agree to the <a style="color: #bebebe;" href="https://github.com/Mannotcool/minigames-host">EULA</a> and its YOUR responsablity.</footer>
     </center>
-    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
     <script src="/js/main.js"></script>
-    <script>
-        const socket = io.connect('http://localhost:3000');
-
-        socket.on('connect', () => {
-            var randCode = Math.floor(100000 + Math.random() * 900000);
-            socket.emit('roomCreate', randCode);
-            inviteurl = document.getElementById("inviteurl");
-            inviteurl.value = "http://127.0.0.1:5500/invite.html?code=" + randCode;
-
-        }); 
-    </script>
 </body>
 </html>
