@@ -19,24 +19,20 @@
                     <h1>minigames.host</h1>
                 </div>
                 <br>
-                <form method="GET" action="/lobby/mlobby.html">
-                    <input type="submit" value="Create a Lobby" class="btn btn-primary w-25" />
-                </form>
+                    <a class="btn btn-primary w-25" href="/lobby/mlobby.html">Create a Lobby</a>
                 <br>
                 <hr>
-                <form method="GET" action="clientLobby.html">
                     <!--before joining room, query the server for the room code and check if the room exists or not-->
                     <div class="mb-3 w-50 p-2">
                         <input required type="text" style="text-align: center;" name="code" class="form-control" id="floatingInput" placeholder="Room Code" maxlength="6" minlength="6" pattern="^[A-Za-z0-9_-]*$">
                     </div>
-                    <input type="submit" value="Join with Code" class="btn btn-outline-primary w-25" id="submitButton"/>
-                </form>
+                    <a class="btn btn-outline-primary w-25" href="clientLobby.html">Join with Code</a>
             </div>
-            <footer style="color: #bebebe;">Check us out on <a style="color: #bebebe;" href="https://github.com/Mannotcool/minigames-host/EULA.md">GitHub</a>. By using this site, you agree to the <a style="color: #bebebe;" href="https://github.com/Mannotcool/minigames-host">EULA</a> and its YOUR responsablity.</footer>
+            <footer style="color: #bebebe;">Check us out on <a style="color: #bebebe;" href="https://github.com/Mannotcool/minigames-host/EULA.md">GitHub</a>. By using this site, you agree to the <a style="color: #bebebe;" href="https://raw.githubusercontent.com/Mannotcool/minigames-host/master/EULA.md">EULA</a> and its YOUR responsablity.</footer>
             </center>
   
         </div>    
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script src="js/main.js"></script>
     </body>
-</html>
+</html> 

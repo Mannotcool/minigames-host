@@ -1,6 +1,4 @@
-jQuery.holdReady(true);
 jQuery("body").css("opacity", 0);
-jQuery.holdReady(false);
 jQuery(function ($) {
     $("body").fadeTo(1500, 1);
     $(document).on("click", "a", function (event) {
@@ -30,6 +28,7 @@ jQuery(function ($) {
             return false;
         });
     });
+
 });
 
 // Enables the Copy to Cliboard button

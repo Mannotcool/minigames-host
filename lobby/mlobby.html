@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lobby - minigames-host</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4259135553959443"
+    crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="/css/anim.css" rel="stylesheet"/>
     <link href="/css/sass.css" rel="stylesheet"/>
@@ -34,20 +36,9 @@
               <span>Hangman</span>
             </div>
           </div>
-    <footer style="color: #bebebe;">Check us out on <a style="color: #bebebe;" href="https://github.com/Mannotcool/minigames-host">GitHub</a>. By using this site, you agree to the <a style="color: #bebebe;" href="https://github.com/Mannotcool/minigames-host">EULA</a> and its YOUR responsablity.</footer>
+    <footer style="color: #bebebe;">Check us out on <a style="color: #bebebe;" href="https://github.com/Mannotcool/minigames-host">GitHub</a>. By using this site, you agree to the <a style="color: #bebebe;" href="https://raw.githubusercontent.com/Mannotcool/minigames-host/master/EULA.md">EULA</a> and its YOUR responsablity.</footer>
     </center>
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
     <script src="/js/main.js"></script>
-    <script>
-        const socket = io.connect('http://localhost:3000');
-
-        socket.on('connect', () => {
-            var randCode = Math.floor(100000 + Math.random() * 900000);
-            socket.emit('roomCreate', randCode);
-            inviteurl = document.getElementById("inviteurl");
-            inviteurl.value = "http://127.0.0.1:5500/invite.html?code=" + randCode;
-
-        }); 
-    </script>
 </body>
 </html>
