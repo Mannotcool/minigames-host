@@ -45,6 +45,8 @@
                 var randCode = Math.floor(100000 + Math.random() * 900000);
                 socket.emit('roomQuery', randCode);
 
+                socket.emit("maxRoomSize", 10);
+
                 socket.on("roomQueryResp", data => {
                     if (data == false) {
                         var startButton = document.createElement("button");

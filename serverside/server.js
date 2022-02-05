@@ -16,13 +16,15 @@ io.on("connection", socket => {
     socket.on("roomQuery", code => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == code) {
-                if (rooms[i][2] != undefined) {
-                    if (rooms[i][2].length >= 10) {
-                        //true if room is full
-                        io.to(socket.id).emit("roomFull", true);
-                        return;
+                socket.on("maxRoomSize", maxPlayers => {
+                    if (rooms[i][2] != undefined) {
+                        if (rooms[i][2].length >= maxPlayers) {
+                            //true if room is full
+                            io.to(socket.id).emit("roomFull", true);
+                            return;
+                        }
                     }
-                }
+                });
                 
                 //false if room is joinable
                 io.to(socket.id).emit("roomFull", false);
