@@ -9,12 +9,14 @@
         <link href="css/sass.css" rel="stylesheet"/>
     </head>
     <body>
+
+        <br>
+        <div class="input-group mb-3">
+            <input type="text" readonly class="form-control"  value="" aria-describedby="button-addon2" id="inviteurl">
+            <button class="btn btn-outline-primary" type="button" id="button-addon2">Copy</button>
+        </div>
+
         <div id="container">
-            <br>
-            <div class="input-group mb-3">
-                <input type="text" readonly class="form-control"  value="" aria-describedby="button-addon2" id="inviteurl">
-                <button class="btn btn-outline-primary" type="button" id="button-addon2">Copy</button>
-            </div>
             <hr>
             <h1 class="text-center">Hangman</h1>
             <div class="float-right">Wrong Guesses: <span id='mistakes'>0</span> of <span id='maxWrong'></span></div>
@@ -45,36 +47,42 @@
                 socket.on("roomQueryResp", data => {
                     if (data == false) {
                         var startButton = document.createElement("button");
+                        startButton.id = "startButton";
                         startButton.innerText = "Start Game";
                         startButton.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
                         document.body.appendChild(startButton);
 
+                        var inviteurl = document.getElementById("inviteurl");
+                        inviteurl.value = "http://127.0.0.1:5500/invite.html?code=" + randCode;
+
                         containerAll.style.filter = "blur(5px)";
 
 
-                        //put an interval timer here that blocks until exited
-                            console.log("test");
+                        var amountOfPlayers = 0;
 
-                            if (startButton.clicked == true) break;
+                        var testInterval = setInterval(() => {
+
+                            startButton.addEventListener("click", () => {
+                                clearInterval(testInterval);
+                                jumpOut();
+                            });
                             
 
                             socket.on("playerJoin", data => {
-                                socket.emit("sendData", randCode);
-                                socket.on("sentData", data => {
-                                    var numOfPlayers = data[1].length;
-                                    console.log(numOfPlayers);
-                                });
+                                amountOfPlayers++;
+                                console.log(amountOfPlayers);
                             });
-                            sleep(300);
-                        //end
-                        console.log("what?");
 
+                            socket.on("playerLeave", data => {
+                                amountOfPlayers--;
+                                console.log(amountOfPlayers);
+                            });
+                        }, 500);
 
-                        containerAll.style = "";
-                        document.body.removeChild(startButton);
-
-                        var inviteurl = document.getElementById("inviteurl");
-                        inviteurl.value = "http://127.0.0.1:5500/invite.html?code=" + randCode;
+                        function jumpOut() {
+                            containerAll.style = "";
+                            document.body.removeChild(startButton);
+                        }
 
                     } else {
                         alert("An error occoured. Redirecting...");

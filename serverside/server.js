@@ -29,10 +29,10 @@ io.on("connection", socket => {
                 } else {
                     rooms[index][2].push(socket.id);
                 }
-                console.log(rooms);
 
                 //alert host that a player has joined
-                io.to(code).emit("playerJoin");
+                var host = rooms[index][1];
+                io.to(host).emit("playerJoin");
 
                 //send back query response
                 io.to(socket.id).emit('roomQueryResp', true);
@@ -59,6 +59,10 @@ io.on("connection", socket => {
             if (rooms[i][2] != undefined) {
                 for (var j = 0; j < rooms[i][2].length; j++) {
                     if (rooms[i][2][j] == socket.id) {
+                        //alert host that a player has left
+                        var host = rooms[i][1];
+                        io.to(host).emit("playerLeave");
+
                         console.log("Client "+socket.id+" left room "+rooms[i][0]);
                         rooms[i][2].splice(j, 1);
                         return;
@@ -66,14 +70,5 @@ io.on("connection", socket => {
                 }
             }
         }
-    });
-
-    socket.on("sendData", code => {
-        var localIndex;
-        for (var i = 0; i < rooms.length; i++) {
-            if (rooms[i][0] == code) localIndex = i;
-        }
-        io.to(code).emit("sentData", rooms[localIndex]);
-        console.log(rooms[localIndex]);
     });
 });
