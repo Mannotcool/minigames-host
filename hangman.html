@@ -41,7 +41,6 @@
             // check if the url contains a code
             var url = window.location.href;
             var code = url.split('?code=').pop();
-            console.log(code);
             
             var nakedurl = location.protocol + '//' + location.host + location.pathname;
 
@@ -58,16 +57,16 @@
                 socket.on('connect', () => {
                     socket.emit('roomQuery', code);
 
-                socket.emit("maxRoomSize", 10);
+                    socket.emit("maxRoomSize", 10);
 
-                socket.on("roomQueryResp", data => {
-                    if (data == false) {
-                        var startButton = document.createElement("button");
-                        startButton.id = "startButton";
-                        startButton.innerText = "Start Game";
-                        startButton.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
-                        startButton.class = "btn btn-primary";
-                        document.body.appendChild(startButton);
+                    socket.on("roomQueryResp", data => {
+                        if (data == false) {
+                            var startButton = document.createElement("button");
+                            startButton.id = "startButton";
+                            startButton.innerText = "Start Game";
+                            startButton.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
+                            startButton.class = "btn btn-primary";
+                            document.body.appendChild(startButton);
 
                             var playerCount = document.createElement("p");
                             playerCount.innerText = "Waiting for players...";
@@ -75,7 +74,7 @@
                             document.body.appendChild(playerCount);
                             console.log(code);
                             var inviteurl = document.getElementById("inviteurl");
-                            
+                                
                             inviteurl.value = "http://127.0.0.1:5500/hangman.html?code=" + code;
 
                             containerAll.style.filter = "blur(5px)";
@@ -88,7 +87,7 @@
                                     clearInterval(testInterval);
                                     jumpOut();
                                 });
-                                
+                                    
                                 socket.on("playerJoin", playerinfo => {
                                     // check if player is in the array
                                     if (!amountOfPlayers.includes(playerinfo)) {
@@ -96,6 +95,7 @@
                                         playerCount.innerText = "Players: "+amountOfPlayers.length+"/10";
                                     }
                                 });
+
                                 socket.on("playerLeave", playerinfo => {
                                     // check if player is in the array
                                     if (amountOfPlayers.includes(playerinfo)) {
@@ -111,11 +111,10 @@
                                 document.body.removeChild(startButton);
                                 document.body.removeChild(playerCount);
                             }
-
                         } else {
-                            
+                            //aaa
                         }
-                    });
+                });
             });
            
         </script>
