@@ -45,7 +45,7 @@
             
             var nakedurl = location.protocol + '//' + location.host + location.pathname;
 
-            //console.log(nakedurl);
+            
             if (code == nakedurl) {
                 var code = Math.floor(100000 + Math.random() * 900000);
                 window.location.href = nakedurl+"?code="+code;
@@ -111,8 +111,7 @@
                             }
 
                         } else {
-                            alert("rooms does not exist. creating room");
-                            window.location.href = "/hangman.html"
+                            
                         }
                     });
             });
