@@ -38,104 +38,85 @@
         <script src="/js/hangman.js"></script>
         <script src="js/main.js"></script>
         <script type="module">
-
             // check if the url contains a code
             var url = window.location.href;
             var code = url.split('?code=').pop();
-
+            console.log(code);
             
+            var nakedurl = location.protocol + '//' + location.host + location.pathname;
 
-            if (code = "") {
+            //console.log(nakedurl);
+            if (code == nakedurl) {
+                var code = Math.floor(100000 + Math.random() * 900000);
+                window.location.href = nakedurl+"?code="+code;
+            }
+                
                 const containerAll = document.getElementById("container");
                 const socket = io.connect('http://localhost:3000');
                 
 
                 socket.on('connect', () => {
-                var randCode = Math.floor(100000 + Math.random() * 900000);
-                socket.emit('roomQuery', randCode);
+                    socket.emit('roomQuery', code);
 
-                socket.on("roomQueryResp", data => {
-                    if (data == false) {
-                        var startButton = document.createElement("button");
-                        startButton.id = "startButton";
-                        startButton.innerText = "Start Game";
-                        startButton.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
-                        startButton.class = "btn btn-primary";
-                        document.body.appendChild(startButton);
+                    socket.on("roomQueryResp", data => {
+                        if (data == false) {
+                            var startButton = document.createElement("button");
+                            startButton.id = "startButton";
+                            startButton.innerText = "Start Game";
+                            startButton.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
+                            startButton.class = "btn btn-primary";
+                            document.body.appendChild(startButton);
 
-                        var playerCount = document.createElement("p");
-                        playerCount.innerText = "Waiting for players...";
-                        playerCount.style = "position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);";
-                        document.body.appendChild(playerCount);
-                        console.log(randCode);
-                        var inviteurl = document.getElementById("inviteurl");
-                        inviteurl.value = "http://127.0.0.1:5500/invite.html?code=" + randCode;
-
-                        containerAll.style.filter = "blur(5px)";
-
-                        var amountOfPlayers = [];
-
-
-                        var testInterval = setInterval(() => {
-                            startButton.addEventListener("click", () => {
-                                clearInterval(testInterval);
-                                jumpOut();
-                            });
+                            var playerCount = document.createElement("p");
+                            playerCount.innerText = "Waiting for players...";
+                            playerCount.style = "position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);";
+                            document.body.appendChild(playerCount);
+                            console.log(code);
+                            var inviteurl = document.getElementById("inviteurl");
                             
-                            socket.on("playerJoin", playerinfo => {
-                                // check if player is in the array
-                                if (!amountOfPlayers.includes(playerinfo)) {
-                                    amountOfPlayers.push(playerinfo);
-                                    playerCount.innerText = "Players: "+amountOfPlayers.length+"/10";
-                                }
-                            });
-                            socket.on("playerLeave", playerinfo => {
-                                // check if player is in the array
-                                if (amountOfPlayers.includes(playerinfo)) {
-                                    // remove player from array
-                                    amountOfPlayers.splice(amountOfPlayers.indexOf(playerinfo), 1);
-                                    playerCount.innerText = "Players: "+amountOfPlayers.length+"/10";
-                                }
-                            });
-                        }, 500);
+                            inviteurl.value = "http://127.0.0.1:5500/hangman.html?code=" + code;
 
-                        function jumpOut() {
-                            containerAll.style = "";
-                            document.body.removeChild(startButton);
-                            document.body.removeChild(playerCount);
+                            containerAll.style.filter = "blur(5px)";
+
+                            var amountOfPlayers = [];
+
+
+                            var testInterval = setInterval(() => {
+                                startButton.addEventListener("click", () => {
+                                    clearInterval(testInterval);
+                                    jumpOut();
+                                });
+                                
+                                socket.on("playerJoin", playerinfo => {
+                                    // check if player is in the array
+                                    if (!amountOfPlayers.includes(playerinfo)) {
+                                        amountOfPlayers.push(playerinfo);
+                                        playerCount.innerText = "Players: "+amountOfPlayers.length+"/10";
+                                    }
+                                });
+                                socket.on("playerLeave", playerinfo => {
+                                    // check if player is in the array
+                                    if (amountOfPlayers.includes(playerinfo)) {
+                                        // remove player from array
+                                        amountOfPlayers.splice(amountOfPlayers.indexOf(playerinfo), 1);
+                                        playerCount.innerText = "Players: "+amountOfPlayers.length+"/10";
+                                    }
+                                });
+                            }, 500);
+
+                            function jumpOut() {
+                                containerAll.style = "";
+                                document.body.removeChild(startButton);
+                                document.body.removeChild(playerCount);
+                            }
+
+                        } else {
+                            alert("rooms does not exist. creating room");
+                            window.location.href = "/hangman.html"
                         }
-
-                    } else {
-                        alert("An error occoured. Redirecting...");
-                        window.location.href = "index.html";
-                    }
-                });
+                    });
             });
-            } else {
-             const url = window.location.href;
-             var code = url.split('?code=').pop();
-
-             const socket = io.connect('http://localhost:3000');
-
-             socket.on('connect', () => {
-                socket.emit('roomQuery', code);
-
-                 socket.on("roomFull", data => {
-                    if (data == true) {
-                    alert("The room you are trying to join is full");
-                        window.location.href = "index.html";
-                    }
-                });
-
-                        socket.on('roomQueryResp', data => {
-                        if (data == true) {
-                             var title = document.createElement("h1");
-                            title.innerText = "Welcome to lobby "+code+"! Please wait for the game to start.";
-                            document.body.appendChild(title);
-                        }
-                   });
-                });
-            }
+           
         </script>
 
 <script type="module">
