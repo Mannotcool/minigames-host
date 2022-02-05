@@ -49,6 +49,7 @@
                         var startButton = document.createElement("button");
                         startButton.id = "startButton";
                         startButton.innerText = "Start Game";
+                        startButton.class = "btn btn-primary";
                         startButton.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
                         document.body.appendChild(startButton);
 
@@ -57,8 +58,8 @@
 
                         containerAll.style.filter = "blur(5px)";
 
+                        var amountOfPlayers = [];
 
-                        var amountOfPlayers = 0;
 
                         var testInterval = setInterval(() => {
 
@@ -67,16 +68,31 @@
                                 jumpOut();
                             });
                             
-
                             socket.on("playerJoin", data => {
-                                amountOfPlayers++;
-                                console.log(amountOfPlayers);
+                                var playerinfo = socket.on("playerJoin");
+                                // check if player is in the array
+                                if (amountOfPlayers.includes(playerinfo.id)) {
+                                    // do nothing
+                                } else {
+                                    amountOfPlayers.push(playerinfo.id);
+                                    console.log(amountOfPlayers.length);
+
+
+                                }
+                            });
+                            socket.on("playerLeave", data => {
+                                var playerinfo = socket.on("playerLeave");
+                                // check if player is in the array
+                                if (amountOfPlayers.includes(playerinfo.id)) {
+                                    // remove player from array
+                                    amountOfPlayers.splice(amountOfPlayers.indexOf(playerinfo.id), 1);
+                                    console.log(amountOfPlayers.length);
+                                } else {
+                                    // do nothing
+                                }
                             });
 
-                            socket.on("playerLeave", data => {
-                                amountOfPlayers--;
-                                console.log(amountOfPlayers);
-                            });
+                            
                         }, 500);
 
                         function jumpOut() {
