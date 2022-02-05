@@ -1,4 +1,4 @@
-
+$(() => {
 var programming_languages = [
 	"python",
 	"javascript",
@@ -21,10 +21,6 @@ let maxWrong = 6;
 let mistakes = 0;
 let guessed = [];
 let wordStatus = null;
-
-function randomWord() {
-  answer = programming_languages[Math.floor(Math.random() * programming_languages.length)];
-}
 
 function generateButtons() {
   let buttonsHTML = 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter =>
@@ -96,6 +92,105 @@ function reset() {
 
 document.getElementById('maxWrong').innerHTML = maxWrong;
 
-randomWord();
 generateButtons();
 guessedWord();
+
+let username = "";
+
+// socket.on('set username', () => {
+//     while (username === "" || username === null) {
+//         username = prompt("Please enter a username");
+//         if (username) {
+//             socket.emit('add username', username);
+//          }
+//      }
+// });
+
+// socket.on('set word', () => {
+//   let word = "";
+//   while (word === "" || word === null) {
+//       word = prompt("You were chosen as the game master! Please enter a word for your friends to guess");
+//       if (word) {
+//           socket.emit('start game', word);
+//           answer
+//       }
+//   }
+//  });
+
+//   socket.on('update lives', (lives) => {
+//       updateMistakes();
+//       checkIfGameLost();
+//       updateHangmanPicture();
+//   });
+
+//   socket.on('guessed word', (guessedWord) => {
+//     guessedWord();
+//   });
+
+//   socket.on('game result', (result) => {
+//       $("#result").html(`You ${result}`);
+//       //disable letters after game is over
+//       $(".letter").prop("disabled", true);
+//       $('#button-container').html("<button id='play-again' class='button'>Play Again</button>")
+//   });
+
+//   socket.on('generate letter buttons', (allGuesses, gameMaster) => {
+//       createLetterButtons();
+
+//       //only users that are not the game master can make guesses
+//       if(socket.io.engine.id != gameMaster){
+//         allGuesses.forEach((letter) => {
+//             $(`#${letter}`).prop("disabled", true);
+//             $(`#${letter}`).addClass("guessed");
+//         });
+//       }
+//       else{
+//         $('.letter').prop("disabled", true);
+//         $(`.letter`).addClass("disabled");
+//       }
+//   });
+
+//   socket.on('disable letter', (letter) => {
+//       $(`#${letter}`).prop("disabled", true);
+//       $(`#${letter}`).addClass("guessed");
+//   });
+
+//   socket.on('disable guessing', () => {
+//       $('.letter').prop("disabled", true);
+//   });
+
+//   socket.on('send chatroom message', (message) => {
+//       $('#messages').append($('<li class="message">').text(message));
+//       const messageArea = document.getElementById("messages");
+//       messageArea.scrollTop = messageArea.scrollHeight;
+//   });
+
+//   socket.on('leave game', (disconnectUser) => {
+//       let message = "";
+//       if(disconnectUser === username){
+//         message = "You have left the chat.";
+//         $(".letter").prop("disabled", true);
+//       }
+//       else{
+//         message = `${disconnectUser} has left the chat.`;
+//       }
+//       $('#messages').append($('<li>').text(message));
+//   });
+
+//   socket.on('full game', () => {
+//       alert("Sorry this game has reached max capacity. Please try again later!");
+//   });
+
+//   socket.on('clear', () => {
+//       $('#guessed-word').html("");
+//       $('#result').html("");
+//   });
+
+//   socket.on('show start game button', () => {
+//       $("#button-container").html("<button id='start-game' class='button'>Start Game </button>");
+//   });
+
+//   socket.on('hide button', () => {
+//       $('#button-container').html("");
+//   });
+});
