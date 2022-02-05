@@ -44,14 +44,20 @@
             socket.on('connect', () => {
                 var randCode = Math.floor(100000 + Math.random() * 900000);
                 socket.emit('roomQuery', randCode);
+
                 socket.on("roomQueryResp", data => {
                     if (data == false) {
                         var startButton = document.createElement("button");
                         startButton.id = "startButton";
                         startButton.innerText = "Start Game";
-                        startButton.class = "btn btn-primary";
                         startButton.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
+                        startButton.class = "btn btn-primary";
                         document.body.appendChild(startButton);
+
+                        var playerCount = document.createElement("p");
+                        playerCount.innerText = "Waiting for players...";
+                        playerCount.style = "position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);";
+                        document.body.appendChild(playerCount);
 
                         var inviteurl = document.getElementById("inviteurl");
                         inviteurl.value = "http://127.0.0.1:5500/invite.html?code=" + randCode;
@@ -62,42 +68,32 @@
 
 
                         var testInterval = setInterval(() => {
-
                             startButton.addEventListener("click", () => {
                                 clearInterval(testInterval);
                                 jumpOut();
                             });
                             
-                            socket.on("playerJoin", data => {
-                                var playerinfo = socket.on("playerJoin");
+                            socket.on("playerJoin", playerinfo => {
                                 // check if player is in the array
-                                if (amountOfPlayers.includes(playerinfo.id)) {
-                                    // do nothing
-                                } else {
-                                    amountOfPlayers.push(playerinfo.id);
-                                    console.log(amountOfPlayers.length);
-
-
+                                if (!amountOfPlayers.includes(playerinfo)) {
+                                    amountOfPlayers.push(playerinfo);
+                                    playerCount.innerText = "Players: "+amountOfPlayers.length+"/10";
                                 }
                             });
-                            socket.on("playerLeave", data => {
-                                var playerinfo = socket.on("playerLeave");
+                            socket.on("playerLeave", playerinfo => {
                                 // check if player is in the array
-                                if (amountOfPlayers.includes(playerinfo.id)) {
+                                if (amountOfPlayers.includes(playerinfo)) {
                                     // remove player from array
-                                    amountOfPlayers.splice(amountOfPlayers.indexOf(playerinfo.id), 1);
-                                    console.log(amountOfPlayers.length);
-                                } else {
-                                    // do nothing
+                                    amountOfPlayers.splice(amountOfPlayers.indexOf(playerinfo), 1);
+                                    playerCount.innerText = "Players: "+amountOfPlayers.length+"/10";
                                 }
                             });
-
-                            
                         }, 500);
 
                         function jumpOut() {
                             containerAll.style = "";
                             document.body.removeChild(startButton);
+                            document.body.removeChild(playerCount);
                         }
 
                     } else {

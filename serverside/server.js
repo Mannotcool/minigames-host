@@ -16,6 +16,17 @@ io.on("connection", socket => {
     socket.on("roomQuery", code => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == code) {
+                if (rooms[i][2] != undefined) {
+                    if (rooms[i][2].length >= 10) {
+                        //true if room is full
+                        io.to(socket.id).emit("roomFull", true);
+                        return;
+                    }
+                }
+                
+                //false if room is joinable
+                io.to(socket.id).emit("roomFull", false);
+
                 //true if room exists then join. else false and create room for client
                 socket.join(code);
 
@@ -23,7 +34,7 @@ io.on("connection", socket => {
                 for (var i = 0; i < rooms.length; i++) {
                     if (rooms[i][0] == code) index = i;
                 }
-                
+                    
                 if (rooms[index][2] == undefined) {
                     rooms[index][2] = [socket.id];
                 } else {
@@ -32,7 +43,7 @@ io.on("connection", socket => {
 
                 //alert host that a player has joined
                 var host = rooms[index][1];
-                io.to(host).emit("playerJoin");
+                io.to(host).emit("playerJoin", socket.id);
 
                 //send back query response
                 io.to(socket.id).emit('roomQueryResp', true);
@@ -61,7 +72,7 @@ io.on("connection", socket => {
                     if (rooms[i][2][j] == socket.id) {
                         //alert host that a player has left
                         var host = rooms[i][1];
-                        io.to(host).emit("playerLeave");
+                        io.to(host).emit("playerLeave", socket.id);
 
                         console.log("Client "+socket.id+" left room "+rooms[i][0]);
                         rooms[i][2].splice(j, 1);
