@@ -9,7 +9,6 @@ const io = require("socket.io")(3000, {
 
 var rooms = [];
 var index;
-var iTemp; //stupid local variables >:(
 
 console.log("Server started");
 
@@ -87,7 +86,7 @@ io.on("connection", socket => {
     });
 
 
-    socket.on("sendData", (data, roomNum) => {
-        io.to(roomNum).broadcast.emit("recvData", data);
+    socket.on("updatePlayers", (data, roomCode) => {
+        io.to(roomCode).emit("update", data);
     });
 });
