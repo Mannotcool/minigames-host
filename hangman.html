@@ -48,6 +48,10 @@
             if (code == nakedurl) {
                 var code = Math.floor(100000 + Math.random() * 900000);
                 window.location.href = nakedurl+"?code="+code;
+            } else {
+                if (code.length != 6 || isNaN(code)) {
+                    window.location.href = nakedurl;
+                }
             }
                 
                 const containerAll = document.getElementById("container");
@@ -59,8 +63,8 @@
 
                     socket.emit("maxRoomSize", 10);
 
-                    socket.on("roomQueryResp", data => {
-                        if (data == false) {
+                socket.on("roomQueryResp", data => {
+                     if (data == false) {
                             var startButton = document.createElement("button");
                             startButton.id = "startButton";
                             startButton.innerText = "Start Game";
@@ -112,7 +116,55 @@
                                 document.body.removeChild(playerCount);
                             }
                         } else {
-                            //aaa
+                            var startButton = document.createElement("button");
+                            startButton.id = "startButton";
+                            startButton.innerText = "Start Game";
+                            startButton.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
+                            startButton.class = "btn btn-primary";
+                            document.body.appendChild(startButton);
+
+                            var playerCount = document.createElement("p");
+                            playerCount.innerText = "Waiting for players...";
+                            playerCount.style = "position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);";
+                            document.body.appendChild(playerCount);
+                            console.log(code);
+                            var inviteurl = document.getElementById("inviteurl");
+                            
+                            inviteurl.value = "http://127.0.0.1:5500/hangman.html?code=" + code;
+
+                            containerAll.style.filter = "blur(5px)";
+
+                            var amountOfPlayers = [];
+
+
+                            var testInterval = setInterval(() => {
+                                startButton.addEventListener("click", () => {
+                                    clearInterval(testInterval);
+                                    jumpOut();
+                                });
+                                
+                                socket.on("playerJoin", playerinfo => {
+                                    // check if player is in the array
+                                    if (!amountOfPlayers.includes(playerinfo)) {
+                                        amountOfPlayers.push(playerinfo);
+                                        playerCount.innerText = "Players: "+amountOfPlayers.length+"/10";
+                                    }
+                                });
+                                socket.on("playerLeave", playerinfo => {
+                                    // check if player is in the array
+                                    if (amountOfPlayers.includes(playerinfo)) {
+                                        // remove player from array
+                                        amountOfPlayers.splice(amountOfPlayers.indexOf(playerinfo), 1);
+                                        playerCount.innerText = "Players: "+amountOfPlayers.length+"/10";
+                                    }
+                                });
+                            }, 500);
+
+                            function jumpOut() {
+                                containerAll.style = "";
+                                document.body.removeChild(startButton);
+                                document.body.removeChild(playerCount);
+                            }
                         }
                 });
             });
