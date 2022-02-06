@@ -14,20 +14,19 @@ var iTemp; //stupid local variables >:(
 console.log("Server started");
 
 io.on("connection", socket => {
-    socket.on("roomQuery", code => {
+    socket.on("roomQuery", (code, maxPlayers) => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == code) {
-                iTemp = i;
-                socket.on("maxRoomSize", maxPlayers => {
-                    if (rooms[iTemp][2] == undefined) return;
 
-                    if (rooms[iTemp][2].length >= maxPlayers) {
+                if (rooms[i][2] != undefined) {
+                    if (rooms[i][2].length >= maxPlayers) {
                         //true if room is full
                         io.to(socket.id).emit("roomFull", true);
                         return;
                     }
-                });
-                
+                }
+
+        
                 //false if room is joinable
                 io.to(socket.id).emit("roomFull", false);
 
@@ -85,5 +84,10 @@ io.on("connection", socket => {
                 }
             }
         }
+    });
+
+
+    socket.on("sendData", (data, roomNum) => {
+        io.to(roomNum).broadcast.emit("recvData", data);
     });
 });
