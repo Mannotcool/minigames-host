@@ -59,9 +59,7 @@
                 
 
                 socket.on('connect', () => {
-                    socket.emit('roomQuery', code);
-
-                    socket.emit("maxRoomSize", 10);
+                    socket.emit('roomQuery', code, 10);
 
                 socket.on("roomQueryResp", data => {
                      if (data == false) {
