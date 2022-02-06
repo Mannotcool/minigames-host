@@ -9,6 +9,7 @@ const io = require("socket.io")(3000, {
 
 var rooms = [];
 var index;
+var iTemp; //stupid local variables >:(
 
 console.log("Server started");
 
@@ -16,10 +17,11 @@ io.on("connection", socket => {
     socket.on("roomQuery", code => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == code) {
+                iTemp = i;
                 socket.on("maxRoomSize", maxPlayers => {
-                    if (rooms[i][2] == undefined) return;
+                    if (rooms[iTemp][2] == undefined) return;
 
-                    if (rooms[i][2].length >= maxPlayers) {
+                    if (rooms[iTemp][2].length >= maxPlayers) {
                         //true if room is full
                         io.to(socket.id).emit("roomFull", true);
                         return;
