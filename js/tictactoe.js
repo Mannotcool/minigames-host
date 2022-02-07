@@ -162,7 +162,7 @@ function myfunc_3(id, socket, code) {
         socket.emit("updatePlayers", ["0", id, 1, 0], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn
         alert("waiting for other player");
     } else {
-        alert("X = "+xTurn+", 0 = "+oTurn);
+        alert("hey buddy, it's not your turn");
     }
 }
 
@@ -198,4 +198,3 @@ function awaitGameUpdate(socket) {
         });
     }, 500);
 }
-
