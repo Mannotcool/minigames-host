@@ -48,14 +48,14 @@ io.on("connection", socket => {
                 io.to(host).emit("playerJoin", socket.id);
 
                 //send back query response
-                io.to(socket.id).emit('roomQueryResp', true);
+                io.to(socket.id).emit('roomQueryResp');
                 console.log("Client "+socket.id+" joined room "+code);
                 return;
             }
         }
 
         //if the room doesnt exist, create it
-        io.to(socket.id).emit('roomQueryResp', false);
+        io.to(socket.id).emit('roomQueryResp');
         socket.join(code);
         rooms.push([code, socket.id]);
         console.log("Client "+socket.id+" created room "+code);
@@ -88,5 +88,13 @@ io.on("connection", socket => {
 
     socket.on("updatePlayers", (data, roomCode) => {
         io.to(roomCode).emit("update", data);
+    });
+
+    socket.on("getRoomInfo", roomCode => {
+        for (var i = 0; i < rooms.length; i++) {
+            if (rooms[i][0] == roomCode) {
+                io.to(socket.id).emit("roomInfo", rooms[i]);
+            }
+        }
     });
 });
