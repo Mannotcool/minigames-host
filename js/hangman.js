@@ -78,6 +78,15 @@ var nakedurl = location.protocol + '//' + location.host + location.pathname;
               }
             });
 
+            socket.on('set username', () => {
+              while (username === "" || username === null) {
+                  username = prompt("Please enter a username");
+                  if (username) {
+                      socket.emit('add username', username);
+                  }
+              }
+          });
+
             socket.on('set word', () => {
               let word = "";
               while (word === "" || word === null) {
@@ -91,7 +100,6 @@ var nakedurl = location.protocol + '//' + location.host + location.pathname;
             socket.on('update lives', (mistakes) => {
               $("#lives").html(`Lives: ${mistakes}`);
               updateHangmanPicture()
-              guessedWord();
               checkIfGameWon();
             });
 
@@ -190,11 +198,6 @@ var nakedurl = location.protocol + '//' + location.host + location.pathname;
               }
             }
 
-            function guessedWord() {
-              wordStatus = answer.split('').map(letter => (guessed.indexOf(letter) >= 0 ? letter : " _ ")).join('');
-
-              document.getElementById('wordSpotlight').innerHTML = wordStatus;
-            }
 
             function updateMistakes() {
               document.getElementById('mistakes').innerHTML = mistakes;
@@ -210,11 +213,6 @@ var nakedurl = location.protocol + '//' + location.host + location.pathname;
               updateMistakes();
               generateButtons();
             }
-
-            document.getElementById('maxWrong').innerHTML = maxWrong;
-
-            generateButtons();
-            guessedWord();
 
 
 
@@ -238,7 +236,7 @@ var nakedurl = location.protocol + '//' + location.host + location.pathname;
               }
             });
 
-              socket.on('update lives', (lives) => {
+              socket.on('update lives', (mistakes) => {
                   updateMistakes();
                   checkIfGameLost();
                   updateHangmanPicture();
