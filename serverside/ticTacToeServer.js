@@ -97,4 +97,8 @@ io.on("connection", socket => {
             }
         }
     });
+
+    socket.on("playerWin", (xOro, room) => {
+        io.to(room).emit("playerWon", xOro);
+    });
 });
