@@ -167,7 +167,7 @@ function myfunc_3(id, socket, code) {
 }
 
 function awaitGameUpdate(socket) {
-    var wait = setInterval(function () {
+    var i = setInterval(function () {
         socket.on("update", data => {
             console.log(data);
             document.getElementById(data[1]).value = data[0];
@@ -177,20 +177,23 @@ function awaitGameUpdate(socket) {
 
             socket.on("playerWon", xOro => {
                 if (xOro == "X") {
+                    clearInterval( i );
                     document.getElementById('print').innerHTML = "Player X won";
                     disableAll();
                     window.alert('Player X won');
-                    clearInterval(wait);
+                    
                 } else if (xOro == "0") {
+                    clearInterval ( i );
                     document.getElementById('print').innerHTML = "Player 0 won";
                     disableAll();
                     window.alert('Player 0 won');
-                    clearInterval(wait);
+                    
                 } else if (xOro == "tie") {
+                    clearInterval( i );
                     document.getElementById('print').innerHTML = "Match Tie";
                     disableAll();
                     window.alert('Match Tie');
-                    clearInterval(wait);
+                    
                 } else {
                     return;
                 }
