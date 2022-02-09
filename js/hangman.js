@@ -220,13 +220,14 @@
         if (whatWord != -1) {
             for (var i = 0; i < whatWord.length; i++) {
                 if ((letterIndex = whatWord.indexOf(letter, startIndex)) != -1) {
-                    //0 for word update
-                    socket.emit("updatePlayers", [0, letter, correctGuesses, letterIndex, h1ID], code);
                     startIndex = letterIndex+1;
                     document.getElementById("letter"+letterIndex).innerText = letter;
                     correctGuesses++;
                     checkWin();
                     document.getElementById(h1ID).disabled = true;
+
+                    //0 for word update
+                    socket.emit("updatePlayers", [0, letter, correctGuesses, letterIndex, h1ID], code);
                 }
                 
                 if (letterIndex == -1 && startIndex <= 0) {
@@ -245,25 +246,25 @@
         }
     }
 
+    var doneWin = 0;
     function checkWin() {
-        //[TODO]: check win isnt working properly
-        console.log("word length: "+whatWord.length);
-        console.log("correct guesses: "+correctGuesses);
-        if (correctGuesses == whatWord.length && lives > 0) {
+        if (correctGuesses == whatWord.length && lives > 0 && doneWin == 0) {
             alert("you won! you get bragging rights. nothing else. just bragging rights");
+            clearInterval(checkForUpdate);
+            doneWin = 1;
         }
     }
 
 
 
-    var done = 0;
+    var doneLives = 0;
     checkForUpdate = setInterval(function() {
         socket.on("update", data => {
             if (data[0] == 1) {
                 lives = data[1];
                 
                 if (lives == 0 && done == 0) {
-                    done = 1;
+                    doneLives = 1;
                     alert("you lost. boo hoo");
                     clearInterval(checkForUpdate);
                 }
