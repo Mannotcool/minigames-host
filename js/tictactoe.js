@@ -34,7 +34,10 @@ const congratsMsgs = [
 	["Your good results will open new doors of opportunities. May you have continued success and happiness. Enjoy what you do, and success will follow as before."],
 	["May God bless you with more success in the coming exams. Congrats on passing this one. You were born to fly, and this exam was a simple milestone to make you fly higher."],
 	["I was worried, but you made me proud anyway. Congratulations on passing the exam with good grades. You keep your winning streak, and it makes my heart fly. Best wishes."]
-]
+];
+
+// select random entry from array and make a new variable to store it once
+var randomMsg = congratsMsgs[Math.floor(Math.random() * congratsMsgs.length)];
 
 var flag;
 var xTurn = 1;
@@ -220,7 +223,7 @@ function awaitGameUpdate(socket) {
             xTurn = data[2];
             oTurn = data[3];
 
-            
+            $("#modal-body").append(randomMsg);
             socket.on("playerWon", xOro => {
                 if (xOro == "X") {
                     clearInterval( i );
@@ -253,6 +256,7 @@ function awaitGameUpdate(socket) {
                 } else if (xOro == "tie") {
                     clearInterval ( i );
                     $("#loading-move").hide();
+                    $("#modal-body").append("it's a tie, no one gets any congrats...");
                     // add attr to blur box
                     $('#blur-box').attr("style", "filter: blur(4px); pointer-events: none; opacity: 0.4;");
                     var myModal = document.getElementById('tiemodal');
