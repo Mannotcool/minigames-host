@@ -1,3 +1,124 @@
+// on document ready with jquery
+$(document).ready(function() {
+    // hide loading move
+    $("#loading-move").hide();
+});
+
+
+
+const socket = io.connect('http://localhost:3000');
+var myID;
+
+const main = document.getElementById('main');
+
+// check if the url contains a code
+var url = window.location.href;
+var code = url.split('?code=').pop();
+
+var nakedurl = location.protocol + '//' + location.host + location.pathname;
+
+
+if (code == nakedurl) {
+    var code = Math.floor(100000 + Math.random() * 900000);
+    window.location.href = nakedurl+"?code="+code;
+} else {
+    if (code.length != 6 || isNaN(code)) {
+        window.location.href = nakedurl;
+    }
+}
+
+var inviteurl = document.getElementById("inviteurl");         
+inviteurl.value = "http://127.0.0.1:5500/tictactoe.html?code=" + code;                 
+
+socket.on("connect", () => {
+    socket.on("sendID", clientID => {
+        myID = clientID;
+    });
+    
+    socket.emit("roomQuery", code, 1); //1 other player allowed (host is counted seperately from the rest of the players)
+
+    socket.on("roomFull", full => {
+        if (full) {
+            alert("Room is full!");
+            window.location.href = "/tictactoe.html";
+        }
+    });
+
+
+    socket.on("roomQueryResp", data => {
+
+
+        socket.emit("getRoomInfo", code);
+        socket.on("roomInfo", info => {
+            if (info[2] == undefined) roomHost();
+            if (info[2] != undefined) roomClient();
+        });
+
+        function roomHost() {
+            var testInterval = setInterval(() => {
+                socket.on("playerJoin", () => {
+                    clearInterval(testInterval);
+                    exitLoop();
+                });
+            }, 500);
+
+
+            // Function called whenever user tab on any box
+            function exitLoop() {
+                // jquery on ready
+                $(document).ready(function () {
+                    $('#blur-box').removeAttr("style");
+                    $('#loading-screen').empty();
+                });
+                console.log('test');
+                //set host player to x
+                flag = 1;
+                roomCode = code;
+
+                awaitGameUpdate(socket);
+
+                document.getElementById("b1").onclick = function() { myfunc_3("b1", socket, code, myID);myfunc(socket); };
+                document.getElementById("b2").onclick = function() { myfunc_3("b2", socket, code, myID);myfunc(socket); };
+                document.getElementById("b3").onclick = function() { myfunc_3("b3", socket, code, myID);myfunc(socket); };
+                document.getElementById("b4").onclick = function() { myfunc_3("b4", socket, code, myID);myfunc(socket); };
+                document.getElementById("b5").onclick = function() { myfunc_3("b5", socket, code, myID);myfunc(socket); };
+                document.getElementById("b6").onclick = function() { myfunc_3("b6", socket, code, myID);myfunc(socket); };
+                document.getElementById("b7").onclick = function() { myfunc_3("b7", socket, code, myID);myfunc(socket); };
+                document.getElementById("b8").onclick = function() { myfunc_3("b8", socket, code, myID);myfunc(socket); };
+                document.getElementById("b9").onclick = function() { myfunc_3("b9", socket, code, myID);myfunc(socket); };
+            }
+        }
+
+        function roomClient() {
+            $(document).ready(function () {
+                    $('#blur-box').removeAttr("style");
+                    $('#loading-screen').empty();
+            });
+
+            //set client player to 0
+            flag = 0;
+            roomCode = code;
+            
+            awaitGameUpdate(socket);
+            $("#loading-move").hide();
+
+            document.getElementById("b1").onclick = function() { myfunc_3("b1", socket, code, myID);myfunc(socket); };
+            document.getElementById("b2").onclick = function() { myfunc_3("b2", socket, code, myID);myfunc(socket); };
+            document.getElementById("b3").onclick = function() { myfunc_3("b3", socket, code, myID);myfunc(socket); };
+            document.getElementById("b4").onclick = function() { myfunc_3("b4", socket, code, myID);myfunc(socket); };
+            document.getElementById("b5").onclick = function() { myfunc_3("b5", socket, code, myID);myfunc(socket); };
+            document.getElementById("b6").onclick = function() { myfunc_3("b6", socket, code, myID);myfunc(socket); };
+            document.getElementById("b7").onclick = function() { myfunc_3("b7", socket, code, myID);myfunc(socket); };
+            document.getElementById("b8").onclick = function() { myfunc_3("b8", socket, code, myID);myfunc(socket); };
+            document.getElementById("b9").onclick = function() { myfunc_3("b9", socket, code, myID);myfunc(socket); };
+        }
+    });
+});
+
+
+
+
+
 //this is to set player to either x or 0
 const congratsMsgs = [
 	["Please accept my heartiest congratulation on your promotion. I am so happy about your promotion. You are one step closer to your dream. Well done!"],
@@ -212,7 +333,6 @@ function awaitGameUpdate(socket) {
         socket.on("updateWait", function() {
             setTimeout(function() {
                 $("#loading-move").hide();
-                console.log("my turn uwu?");
             }, 200);
         });
 
@@ -227,7 +347,7 @@ function awaitGameUpdate(socket) {
             socket.on("playerWon", xOro => {
                 if (xOro == "X") {
                     clearInterval( i );
-                    document.getElementById('print').innerHTML = "Playbter X won";
+                    document.getElementById('print').innerHTML = "Player X won";
                     disableAll();
                     $("#loading-move").hide();
                     var myModal = document.getElementById('pXmodal');
@@ -273,6 +393,34 @@ function awaitGameUpdate(socket) {
                     return;
                 }
             });
+        });
+    }, 500);
+}
+
+function votePlayAgain(socket) {
+    socket.emit("updateReplay", 1, code);
+    setInterval(function() {
+        socket.on("reload", function() {
+            alert("reloading");
+            window.location.href = nakedurl;
+        });
+
+        socket.on("leaveRoom", function() {
+            window.location.href = "/index.html";
+        });
+    }, 500);
+}
+
+function voteNo(socket) {
+    socket.emit("updateReplay", 0, code);
+    setInterval(function() {
+        socket.on("reload", function() {
+            alert("reloading...");
+            window.location.href = nakedurl;
+        });
+
+        socket.on("leaveRoom", function() {
+            window.location.href = "/index.html";
         });
     }, 500);
 }
