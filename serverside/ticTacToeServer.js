@@ -87,7 +87,17 @@ io.on("connection", socket => {
 
 
     socket.on("updatePlayers", (data, roomCode) => {
-        io.to(data[4]).emit("updateWait");
+        var roomIndex;
+
+        for (var i = 0; i < rooms.length; i++) {
+            if (rooms[i][0] == roomCode) roomIndex = i;
+        }
+
+        if (data[2] == 1) {
+            io.to(rooms[roomIndex][1]).emit("updateWait");
+        } else if (data[2] == 0) {
+            io.to(rooms[roomIndex][2][0]).emit("updateWait");
+        }
         io.to(roomCode).emit("update", data);
     });
 

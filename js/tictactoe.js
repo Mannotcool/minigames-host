@@ -144,13 +144,13 @@ function disableAll() {
 
 //SET FLAG TO 1 FOR PLAYER X, 0 FOR PLAYER 0. DO THIS IN tictactoe.html (based on if player is host (X) or client (0))
 
-function myfunc_3(id, socket, code, myID) {
+function myfunc_3(id, socket, code) {
     
     if (flag == 1 && xTurn == 1) {
         document.getElementById(id).value = "X";
         document.getElementById(id).disabled = true;
 
-        socket.emit("updatePlayers", ["X", id, 0, 1, myID], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn. myID is for this client's id (update player move)
+        socket.emit("updatePlayers", ["X", id, 0, 1], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn
         $("#loading-move").show();
 
     } else if (flag == 0 && oTurn == 1) {
@@ -159,7 +159,7 @@ function myfunc_3(id, socket, code, myID) {
 
         oTurn = 0;
         xTurn = 1;
-        socket.emit("updatePlayers", ["0", id, 1, 0, myID], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn
+        socket.emit("updatePlayers", ["0", id, 1, 0], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn
         $("#loading-move").show();
 
     } else {
@@ -169,19 +169,19 @@ function myfunc_3(id, socket, code, myID) {
 
 function awaitGameUpdate(socket) {
     var i = setInterval(function () {
+        socket.on("updateWait", function() {
+            setTimeout(function() {
+                $("#loading-move").hide();
+                console.log("my turn uwu?");
+            }, 200);
+        });
+
         socket.on("update", data => {
             console.log(data);
             document.getElementById(data[1]).value = data[0];
             document.getElementById(data[1]).disabled = true;
             xTurn = data[2];
             oTurn = data[3];
-
-            socket.on("updateWait", function() {
-                setTimeout(function() {
-                $("#loading-move").hide();
-                console.log("my turn uwu?");
-                }, 200);
-            });
 
             
             socket.on("playerWon", xOro => {
