@@ -99,4 +99,8 @@ io.on("connection", socket => {
     socket.on("playerWin", (xOro, room) => {
         io.to(room).emit("playerWon", xOro);
     });
+
+    socket.on("startGame", (roomCode, word) => {
+        io.to(roomCode).emit("gameStarted", word);
+    });
 });
