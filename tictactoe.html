@@ -38,6 +38,60 @@
             </div>
           </div>
         
+    <!-- Modal -->
+    <div class="modal fade" id="pXmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="pXmodalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title-X" id="pXmodalLabel">Player X wins! <i class="fa-solid fa-trophy"></i></h5>
+                    </div>
+                    <div class="modal-body-xwin">
+                    ...
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="window.location.href = window.location.href;" class="btn btn-primary">Play Again <i class="fa-solid fa-rotate"></i></button>
+                        <a href="./" class="btn btn-outline-primary">Home Page <i class="fa-solid fa-chevron-left"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Modal -->
+    <div class="modal fade" id="p0modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="p0modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title-O" id="p0modalLabel">Player O wins! <i class="fa-solid fa-trophy"></i></h5>
+                    </div>
+                    <div class="modal-body-owin">
+                    ...
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="window.location.href = window.location.href;" class="btn btn-primary">Play Again <i class="fa-solid fa-rotate"></i></button>
+                        <a href="./" class="btn btn-outline-primary">Home Page <i class="fa-solid fa-chevron-left"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Modal -->
+    <div class="modal fade" id="tiemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="tieLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title-tie" id="staticBackdropLabel">Tie! <i class="fa-solid fa-infinity"></i></h5>
+                    </div>
+                    <div class="modal-body-tie">
+                    ...
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="window.location.href = window.location.href;" class="btn btn-primary">Play Again <i class="fa-solid fa-rotate"></i></button>
+                        <a href="./" class="btn btn-outline-primary">Home Page <i class="fa-solid fa-chevron-left"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="container">
         
             <center>
@@ -126,8 +180,8 @@
             <!-- Space to show player turn -->
             <p id="print"></p>
         </div>
-        </div>
-        </center>
+       </div>
+      </center>
     </div>
 
         <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>

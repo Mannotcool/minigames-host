@@ -1,4 +1,41 @@
 //this is to set player to either x or 0
+const congratsMsgs = [
+	["Please accept my heartiest congratulation on your promotion. I am so happy about your promotion. You are one step closer to your dream. Well done!"],
+	["It’s impressive to see all your dreams are coming true. Good job! Congratulations on your big promotion. You worked hard, and you deserve it—my best wishes on your promotion."],
+	["You just rose one step higher on the ladder that leads you to the ultimate success in life. Congratulations on your promotion!"],
+	["May this promotion be the perfect inspiration for you to make an even bigger contribution to your company. Congratulations!"],
+	["It’s a piece of happy news for all of us to know that you’re getting promoted. We all hope that you’ll make a leader someday. Congratulations!"],
+	["You always bring positive energy to the office. Promoting you is one of the rightest decisions this company has ever made. Congratulations!"],
+	["Dedication and hard work never remains unpaid. Your promotion is a classic example of that. I am very delighted. Congratulations!"],
+	["I feel so overwhelmed by the joy of seeing you win the award. You made us all proud with this win. Congratulations!"],
+	["I’m so happy that your talent and hard work had finally been rewarded. You really deserved this award more than anyone else!"],
+	["You didn’t just take the award home with you. You have won the hearts of us with it. Congratulations to you for winning everything!"],
+	["Congratulations to the most talented guy in the field. I’d also like to thank the award committee for finally finding the hidden gem in the box!"],
+	["Deep inside my heart, I always knew that you are born to stand out; it does not matter how much bigger the crowd is. Congratulations on this big award. I am so proud of you."],
+	["Well done. We are so proud of you for achieving this brilliant award. Your hard work paid off finally. Congratulations on this new venture."],
+	["Congratulations dear. This award has added a new feather to your crown, and You truly deserved it in every way. Take a bow for such an amazing performance."],
+	["It would have been an injustice if such a brilliant person like you wasn’t rewarded for all of his great contributions! Congratulations!"],
+	["Many many congratulations on being graduated. This is just the beginning. You will shine brighter than you can think in the future. Keep it up!"],
+	["You have finished gathering all the knowledge and tools that you need for the rest of your life. It’s time to apply them. Congratulations!"],
+	["There’s no better way of completing graduation than with a distinction. Your hard work for all these years has been paid off. Congratulations!"],
+	["Congratulations on passing this significant milestone. Nice work you have done, and I hope success will keep following you in the future. Great job, Mr/ Miss Graduate."],
+	["Congratulation Graduate. Keep striving throughout your life because the sky is the only limit for you. All the best for the future, dear."],
+	["You have prepared yourself well for the struggles of life. It’s time to set your aims high and start chasing them. Congratulations!"],
+	["This is a day of great happiness for everyone including me. You’ve made us all proud. I wish you a successful life ahead. Congratulations!"],
+	["You deserve this job and I am so happy for you! Congratulations and good luck"],
+	["Congratulations on your new job! I am so happy to see you fulfilling all your dreams. You deserve this job, and I am so proud of you— best of luck for your bright future."],
+	["May your new job opens a new door of opportunities in your life. Best wishes and good luck with your new job, a new career. Wishing you all the best in your career."],
+	["Watching you chasing the best in life makes me so happy that I cannot describe. You deserve all the happiness in the world—best wishes for your new job."],
+	["Congratulations! I wish you all the best in your dream job. I have seen you working hard for this position. You are suitable for the post. Keep up the great work."],
+	["You’re one of the best employees in the office. I will surely miss your presence, but I am happy about your new job. You deserve the job as you worked hard for it. Congratulations!"],
+	["Congratulations! All the sacrifices and sleepless nights have finally paid off. I am really happy for you."],
+	["My heart is so pleased for you and your achievement in passing this exam. You proved that with determination and hard work, success could surely be achieved. Congratulations!"],
+	["My heartfelt congratulations go to you for passing this exam. You are a well-deserved candidate, and I am truly happy for you. Keep going!"],
+	["Your good results will open new doors of opportunities. May you have continued success and happiness. Enjoy what you do, and success will follow as before."],
+	["May God bless you with more success in the coming exams. Congrats on passing this one. You were born to fly, and this exam was a simple milestone to make you fly higher."],
+	["I was worried, but you made me proud anyway. Congratulations on passing the exam with good grades. You keep your winning streak, and it makes my heart fly. Best wishes."]
+]
+
 var flag;
 var xTurn = 1;
 var oTurn = 0;
@@ -189,24 +226,43 @@ function awaitGameUpdate(socket) {
                     clearInterval( i );
                     document.getElementById('print').innerHTML = "Playbter X won";
                     disableAll();
-                    window.alert('Player X won');
+                    $("#loading-move").hide();
+                    var myModal = document.getElementById('pXmodal');
+                    var modal = bootstrap.Modal.getOrCreateInstance(myModal)
+                    modal.show()
+                    $('#blur-box').attr("style", "filter: blur(4px); pointer-events: none; opacity: 0.4;");
                     document.getElementById('reset').disabled = false;
                     
                 } else if (xOro == "0") {
                     clearInterval ( i );
+                    $("#loading-move").hide();
+                    // add attr to blur box
+                    $('#blur-box').attr("style", "filter: blur(4px); pointer-events: none; opacity: 0.4;");
+                    var myModal = document.getElementById('p0modal');
+                    var modal = bootstrap.Modal.getOrCreateInstance(myModal)
+                    modal.show()
+
+                   
                     document.getElementById('print').innerHTML = "Player 0 won";
                     disableAll();
-                    window.alert('Player 0 won');
                     //remove the disabled attribute of the reset button
                     document.getElementById('reset').disabled = false;
                     
                     
                     
                 } else if (xOro == "tie") {
-                    clearInterval( i );
-                    document.getElementById('print').innerHTML = "Match Tie";
+                    clearInterval ( i );
+                    $("#loading-move").hide();
+                    // add attr to blur box
+                    $('#blur-box').attr("style", "filter: blur(4px); pointer-events: none; opacity: 0.4;");
+                    var myModal = document.getElementById('tiemodal');
+                    var modal = bootstrap.Modal.getOrCreateInstance(myModal)
+                    modal.show()
+
+                   
+                    document.getElementById('print').innerHTML = "Player 0 won";
                     disableAll();
-                    window.alert('Match Tie');
+                    //remove the disabled attribute of the reset button
                     document.getElementById('reset').disabled = false;
                     
                 } else {
