@@ -46,7 +46,7 @@
                         <h5 class="modal-title-X" id="pXmodalLabel">Player X wins! <i class="fa-solid fa-trophy"></i></h5>
                     </div>
                     <div class="modal-body" id="modal-body">
-                    ...
+                    
                     </div>
                     <div class="modal-footer">
                         <button onclick="votePlayAgain(socket);" class="btn btn-primary">Play Again <i class="fa-solid fa-rotate"></i></button>
@@ -64,7 +64,7 @@
                         <h5 class="modal-title-O" id="p0modalLabel">Player O wins! <i class="fa-solid fa-trophy"></i></h5>
                     </div>
                     <div class="modal-body" id="modal-body">
-                    ...
+                    
                     </div>
                     <div class="modal-footer">
                         <button onclick="votePlayAgain(socket);" class="btn btn-primary">Play Again <i class="fa-solid fa-rotate"></i></button>
@@ -81,8 +81,8 @@
                     <div class="modal-header">
                         <h5 class="modal-title-tie" id="staticBackdropLabel">Tie! <i class="fa-solid fa-infinity"></i></h5>
                     </div>
-                    <div class="modal-body" id="modal-body">
-                    ...
+                    <div class="modal-body" id="modal-body-tie">
+                    Its a tie! Nobody wins, play again!
                     </div>
                     <div class="modal-footer">
                         <button onclick="votePlayAgain(socket);" class="btn btn-primary">Play Again <i class="fa-solid fa-rotate"></i></button>
@@ -108,12 +108,11 @@
                 </div>
                 
                 <div id="blur-box" style="filter: blur(4px); pointer-events: none; opacity: 0.4;">
-                
                 <h2>Tic Tac Toe <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#infoModal"><i class="fa-solid fa-circle-info"></i></button></h2>
             
 
             <!-- Game Instructions -->
-            <p id="ins">Game starts by just Tap on
+            <p id="ins">Game starts when the host taps on a
                 box<br><br>First Player starts as
                 <b>Player X</b><br>And<br>Second
                 Player as <b>Player 0</b>
@@ -156,7 +155,6 @@
                 </div>
             </div>
             <br>
-            <input id="reset" disabled class="btn btn-primary w-15 align-items-center" value="Reset" onclick="window.location.href">
         </center>
         <div id="loading-move">
             <h3>Waiting for player move... <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div></h3>
@@ -178,7 +176,6 @@
 
             <br><br>
             <!-- Space to show player turn -->
-            <p id="print"></p>
         </div>
        </div>
       </center>

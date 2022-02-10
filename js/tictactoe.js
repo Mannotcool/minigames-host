@@ -43,11 +43,9 @@ socket.on("connect", () => {
             window.location.href = "/tictactoe.html";
         }
     });
+    
 
-
-    socket.on("roomQueryResp", data => {
-
-
+    socket.on("roomQueryResp", () => {
         socket.emit("getRoomInfo", code);
         socket.on("roomInfo", info => {
             if (info[2] == undefined) roomHost();
@@ -66,16 +64,17 @@ socket.on("connect", () => {
             // Function called whenever user tab on any box
             function exitLoop() {
                 // jquery on ready
-                $(document).ready(function () {
-                    $('#blur-box').removeAttr("style");
-                    $('#loading-screen').empty();
-                });
+                $('#blur-box').removeAttr("style");
+                $('#loading-screen').empty();
+
+                
                 console.log('test');
                 //set host player to x
                 flag = 1;
                 roomCode = code;
 
                 awaitGameUpdate(socket);
+                $("#loading-move").hide();
 
                 document.getElementById("b1").onclick = function() { myfunc_3("b1", socket, code, myID);myfunc(socket); };
                 document.getElementById("b2").onclick = function() { myfunc_3("b2", socket, code, myID);myfunc(socket); };
@@ -90,10 +89,8 @@ socket.on("connect", () => {
         }
 
         function roomClient() {
-            $(document).ready(function () {
-                    $('#blur-box').removeAttr("style");
-                    $('#loading-screen').empty();
-            });
+            $('#blur-box').removeAttr("style");
+            $('#loading-screen').empty();
 
             //set client player to 0
             flag = 0;
@@ -121,10 +118,10 @@ socket.on("connect", () => {
 
 //this is to set player to either x or 0
 const congratsMsgs = [
-	["Please accept my heartiest congratulation on your promotion. I am so happy about your promotion. You are one step closer to your dream. Well done!"],
-	["It’s impressive to see all your dreams are coming true. Good job! Congratulations on your big promotion. You worked hard, and you deserve it—my best wishes on your promotion."],
-	["You just rose one step higher on the ladder that leads you to the ultimate success in life. Congratulations on your promotion!"],
-	["May this promotion be the perfect inspiration for you to make an even bigger contribution to your company. Congratulations!"],
+	["Please accept my heartiest congratulation on your promotion. I am so happy about your promotion. You are one step closer to your dream. Well done!",
+	"It’s impressive to see all your dreams are coming true. Good job! Congratulations on your big promotion. You worked hard, and you deserve it—my best wishes on your promotion.",
+	"You just rose one step higher on the ladder that leads you to the ultimate success in life. Congratulations on your promotion!",
+	"May this promotion be the perfect inspiration for you to make an even bigger contribution to your company. Congratulations!"],
 	["It’s a piece of happy news for all of us to know that you’re getting promoted. We all hope that you’ll make a leader someday. Congratulations!"],
 	["You always bring positive energy to the office. Promoting you is one of the rightest decisions this company has ever made. Congratulations!"],
 	["Dedication and hard work never remains unpaid. Your promotion is a classic example of that. I am very delighted. Congratulations!"],
@@ -159,6 +156,7 @@ const congratsMsgs = [
 
 // select random entry from array and make a new variable to store it once
 var randomMsg = congratsMsgs[Math.floor(Math.random() * congratsMsgs.length)];
+$("#modal-body").append("<em>" + randomMsg + "</em>");
 
 var flag;
 var xTurn = 1;
@@ -343,18 +341,16 @@ function awaitGameUpdate(socket) {
             xTurn = data[2];
             oTurn = data[3];
 
-            $("#modal-body").append(randomMsg);
+            
             socket.on("playerWon", xOro => {
                 if (xOro == "X") {
                     clearInterval( i );
-                    document.getElementById('print').innerHTML = "Player X won";
                     disableAll();
                     $("#loading-move").hide();
                     var myModal = document.getElementById('pXmodal');
                     var modal = bootstrap.Modal.getOrCreateInstance(myModal)
                     modal.show()
                     $('#blur-box').attr("style", "filter: blur(4px); pointer-events: none; opacity: 0.4;");
-                    document.getElementById('reset').disabled = false;
                     
                 } else if (xOro == "0") {
                     clearInterval ( i );
@@ -365,29 +361,22 @@ function awaitGameUpdate(socket) {
                     var modal = bootstrap.Modal.getOrCreateInstance(myModal)
                     modal.show()
 
-                   
-                    document.getElementById('print').innerHTML = "Player 0 won";
+                
                     disableAll();
-                    //remove the disabled attribute of the reset button
-                    document.getElementById('reset').disabled = false;
+ 
                     
                     
                     
                 } else if (xOro == "tie") {
                     clearInterval ( i );
                     $("#loading-move").hide();
-                    $("#modal-body").append("it's a tie, no one gets any congrats...");
+                    $("#modal-body").append("<p>it's a tie, no one gets any congrats...</p>");
                     // add attr to blur box
                     $('#blur-box').attr("style", "filter: blur(4px); pointer-events: none; opacity: 0.4;");
                     var myModal = document.getElementById('tiemodal');
                     var modal = bootstrap.Modal.getOrCreateInstance(myModal)
                     modal.show()
-
-                   
-                    document.getElementById('print').innerHTML = "Player 0 won";
                     disableAll();
-                    //remove the disabled attribute of the reset button
-                    document.getElementById('reset').disabled = false;
                     
                 } else {
                     return;
@@ -397,30 +386,15 @@ function awaitGameUpdate(socket) {
     }, 500);
 }
 
+
+
 function votePlayAgain(socket) {
-    socket.emit("updateReplay", 1, code);
+    socket.emit("updateReplay", code);
     setInterval(function() {
-        socket.on("reload", function() {
-            alert("reloading");
-            window.location.href = nakedurl;
+        socket.on("reload", newcode => {
+            console.log("reload");
+            window.location.href = nakedurl+"?code="+newcode;
         });
-
-        socket.on("leaveRoom", function() {
-            window.location.href = "/index.html";
-        });
-    }, 500);
+    }, 300);
 }
 
-function voteNo(socket) {
-    socket.emit("updateReplay", 0, code);
-    setInterval(function() {
-        socket.on("reload", function() {
-            alert("reloading...");
-            window.location.href = nakedurl;
-        });
-
-        socket.on("leaveRoom", function() {
-            window.location.href = "/index.html";
-        });
-    }, 500);
-}

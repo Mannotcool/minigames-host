@@ -17,11 +17,13 @@ io.on("connection", socket => {
             if (rooms[i][0] == code) {
                 var index;
 
-                if (rooms[i][2] != undefined) {
-                    if (rooms[i][2].length >= maxPlayers) {
-                        //true if room is full
-                        io.to(socket.id).emit("roomFull", true);
-                        return;
+                if (rooms[i][1] == undefined) {
+                    if (rooms[i][2] != undefined) {
+                        if (rooms[i][2].length >= maxPlayers) {
+                            //true if room is full
+                            io.to(socket.id).emit("roomFull", true);
+                            return;
+                        }
                     }
                 }
 
@@ -36,11 +38,16 @@ io.on("connection", socket => {
                 for (var i = 0; i < rooms.length; i++) {
                     if (rooms[i][0] == code) index = i;
                 }
-                    
-                if (rooms[index][2] == undefined) {
-                    rooms[index][2] = [socket.id];
+                
+
+                if (rooms[index][1] == undefined) {
+                    rooms[index][1] = socket.id;
                 } else {
-                    rooms[index][2].push(socket.id);
+                    if (rooms[index][2] == undefined) {
+                        rooms[index][2] = [socket.id];
+                    } else {
+                        rooms[index][2].push(socket.id);
+                    }
                 }
 
                 //alert host that a player has joined
@@ -63,12 +70,6 @@ io.on("connection", socket => {
 
     socket.on("disconnect", () => {
         for (var i = 0; i < rooms.length; i++) {
-            if (rooms[i][1] == socket.id) {
-                console.log("Client "+socket.id+" destroyed room "+rooms[i][0]);
-                rooms.splice(i, 1);
-                return;
-            }
-
             if (rooms[i][2] != undefined) {
                 for (var j = 0; j < rooms[i][2].length; j++) {
                     if (rooms[i][2][j] == socket.id) {
@@ -78,10 +79,22 @@ io.on("connection", socket => {
 
                         console.log("Client "+socket.id+" left room "+rooms[i][0]);
                         rooms[i][2].splice(j, 1);
-                        return;
+                        break;
                     }
                 }
             }
+
+            if (rooms[i][1] == socket.id) {
+                rooms[i][1] = undefined;
+                console.log("Host left room "+rooms[i][0]); 
+            }
+            // If there is no players and/or host, remove the room.
+            if (rooms[i][1] == undefined && (rooms[i][2] == undefined || rooms[i][2].length == 0)) {
+                console.log("Someone with the id "+socket.id+" destroyed room "+rooms[i][0]);
+                rooms.splice(i, 1);
+                return;
+            }
+            console.log(rooms);
         }
     });
 
@@ -115,37 +128,28 @@ io.on("connection", socket => {
 
 
     //this code is complete chaos. im too tired to fix it right now.
-    socket.on("updateReplay", (voteOrNo, room) => {
+    socket.on("updateReplay", room => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == room) {
-                console.log(rooms[i][3]);
+                console.log(rooms[i][2]);
                 
                 if (rooms[i][3] == undefined) {
-                    if (voteOrNo == 1) {
-                        rooms[i][3] = [socket.id];
-                    } else if (voteOrNo == 0) {
-                        rooms[i][3] = [0];
-                    }
+                    rooms[i][3] = [socket.id];
                 } else {
                     if (rooms[i][3].includes(socket.id) == false) {
-                        if (voteOrNo == 1) {
-                            rooms[i][3].push(socket.id);
-                        } else if (voteOrNo == 0 && rooms[i][3].length == 1) {
-                            rooms[i][3].push(0);
-                        }
+                        rooms[i][3].push(socket.id);
                     }
                 }
 
-                if (rooms[i][3].includes(0) == false && rooms[i][3].length > 1) {
-                    rooms.splice(i, 1);
-
-                    io.to(room).emit("reload");
-                    console.log("boner: "+room);
-                } else if (rooms[i][3].includes(0) == true && rooms[i][3].length > 1) {
-                    rooms.splice(i, 1);
-                    
-                    io.to(room).emit("leaveRoom");
-                    console.log("leaving room");
+                if (rooms[i][3].length > 1) {
+                    const newcode = Math.floor(100000 + Math.random() * 900000);
+                    console.log(newcode);
+                    io.to(room).emit("reload", newcode);
+                    // wait 500 ms then send the replay
+                    setTimeout(() => {
+                        io.to(room).emit("reload", newcode);
+                        clearTimeout();
+                    }, 2000);
                 }
                 return;
             }
