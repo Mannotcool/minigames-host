@@ -38,7 +38,6 @@ io.on("connection", socket => {
                 for (var i = 0; i < rooms.length; i++) {
                     if (rooms[i][0] == code) index = i;
                 }
-                
 
                 if (rooms[index][1] == undefined) {
                     rooms[index][1] = socket.id;
@@ -94,7 +93,6 @@ io.on("connection", socket => {
                 rooms.splice(i, 1);
                 return;
             }
-            console.log(rooms);
         }
     });
 
@@ -131,7 +129,6 @@ io.on("connection", socket => {
     socket.on("updateReplay", room => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == room) {
-                console.log(rooms[i][2]);
                 
                 if (rooms[i][3] == undefined) {
                     rooms[i][3] = [socket.id];
@@ -143,7 +140,6 @@ io.on("connection", socket => {
 
                 if (rooms[i][3].length > 1) {
                     const newcode = Math.floor(100000 + Math.random() * 900000);
-                    console.log(newcode);
                     io.to(room).emit("reload", newcode);
                     // wait 500 ms then send the replay
                     setTimeout(() => {

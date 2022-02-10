@@ -389,6 +389,14 @@ function awaitGameUpdate(socket) {
 
 
 function votePlayAgain(socket) {
+
+    // change button to disabled and add "<span class='spinner-grow spinner-grow-sm' role='status' aria-hidden='true'></span><span class='visually-hidden'>Loading...</span>" as element in the button
+    $("#play-again").attr("disabled", true);
+    $("#play-again").text("Waiting... ");
+    $("#play-again").append("<span class='spinner-grow spinner-grow-sm' role='status' aria-hidden='true'></span><span class='visually-hidden'>Loading...</span>");    
+    
+
+    // send vote to server
     socket.emit("updateReplay", code);
     setInterval(function() {
         socket.on("reload", newcode => {
