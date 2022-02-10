@@ -8,7 +8,6 @@ const io = require("socket.io")(3000, {
 
 
 var rooms = [];
-var index;
 
 console.log("Server started");
 
@@ -16,6 +15,7 @@ io.on("connection", socket => {
     socket.on("roomQuery", (code, maxPlayers) => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == code) {
+                var index;
 
                 if (rooms[i][2] != undefined) {
                     if (rooms[i][2].length >= maxPlayers) {
@@ -111,5 +111,44 @@ io.on("connection", socket => {
 
     socket.on("playerWin", (xOro, room) => {
         io.to(room).emit("playerWon", xOro);
+    });
+
+
+    //this code is complete chaos. im too tired to fix it right now.
+    socket.on("updateReplay", (voteOrNo, room) => {
+        for (var i = 0; i < rooms.length; i++) {
+            if (rooms[i][0] == room) {
+                console.log(rooms[i][3]);
+                
+                if (rooms[i][3] == undefined) {
+                    if (voteOrNo == 1) {
+                        rooms[i][3] = [socket.id];
+                    } else if (voteOrNo == 0) {
+                        rooms[i][3] = [0];
+                    }
+                } else {
+                    if (rooms[i][3].includes(socket.id) == false) {
+                        if (voteOrNo == 1) {
+                            rooms[i][3].push(socket.id);
+                        } else if (voteOrNo == 0 && rooms[i][3].length == 1) {
+                            rooms[i][3].push(0);
+                        }
+                    }
+                }
+
+                if (rooms[i][3].includes(0) == false && rooms[i][3].length > 1) {
+                    rooms.splice(i, 1);
+
+                    io.to(room).emit("reload");
+                    console.log("boner: "+room);
+                } else if (rooms[i][3].includes(0) == true && rooms[i][3].length > 1) {
+                    rooms.splice(i, 1);
+                    
+                    io.to(room).emit("leaveRoom");
+                    console.log("leaving room");
+                }
+                return;
+            }
+        }
     });
 });
