@@ -48,9 +48,11 @@
                     <button class="btn btn-outline-primary" type="button" id="button-addon2">Copy</button>
                 </div>
                 <hr>
+                
                 <div id="loading-screen">
                     <h2>Waiting for players... <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div></h2>
                 </div>
+                
                 <div id="blur-box" style="filter: blur(4px); pointer-events: none; opacity: 0.4;">
                 
                 <h2>Tic Tac Toe <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#infoModal"><i class="fa-solid fa-circle-info"></i></button></h2>
@@ -100,8 +102,11 @@
                 </div>
             </div>
             <br>
-            <input id="but" class="btn btn-primary w-15 align-items-center" value="Reset" onclick="myfunc_2()">
+            <input id="reset" disabled class="btn btn-primary w-15 align-items-center" value="Reset" onclick="window.location.href">
         </center>
+        <div id="loading-move">
+            <h3>Waiting for player move... <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div></h3>
+        </div>
 
 
             
@@ -126,12 +131,19 @@
     </div>
 
         <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
-        <script src="js/main.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script src="js/tictactoe.js"></script>
         <script type="module">
+            // on document ready with jquery
+            $(document).ready(function() {
+                // hide loading move
+                $("#loading-move").hide();
+            });
+
+
+
             const socket = io.connect('http://localhost:3000');
-            console.log(socket);
+            var myID;
 
             const main = document.getElementById('main');
 
@@ -155,6 +167,9 @@
             inviteurl.value = "http://127.0.0.1:5500/tictactoe.html?code=" + code;                 
 
             socket.on("connect", () => {
+                socket.on("sendID", clientID => {
+                    myID = clientID;
+                });
                 
                 socket.emit("roomQuery", code, 1); //1 other player allowed (host is counted seperately from the rest of the players)
 
@@ -174,7 +189,7 @@
                         if (info[2] == undefined) roomHost();
                         if (info[2] != undefined) roomClient();
                     });
-
+      
                     function roomHost() {
                         var testInterval = setInterval(() => {
                             socket.on("playerJoin", () => {
@@ -198,15 +213,15 @@
 
                             awaitGameUpdate(socket);
 
-                            document.getElementById("b1").onclick = function() { myfunc_3("b1", socket, code);myfunc(socket); };
-                            document.getElementById("b2").onclick = function() { myfunc_3("b2", socket, code);myfunc(socket); };
-                            document.getElementById("b3").onclick = function() { myfunc_3("b3", socket, code);myfunc(socket); };
-                            document.getElementById("b4").onclick = function() { myfunc_3("b4", socket, code);myfunc(socket); };
-                            document.getElementById("b5").onclick = function() { myfunc_3("b5", socket, code);myfunc(socket); };
-                            document.getElementById("b6").onclick = function() { myfunc_3("b6", socket, code);myfunc(socket); };
-                            document.getElementById("b7").onclick = function() { myfunc_3("b7", socket, code);myfunc(socket); };
-                            document.getElementById("b8").onclick = function() { myfunc_3("b8", socket, code);myfunc(socket); };
-                            document.getElementById("b9").onclick = function() { myfunc_3("b9", socket, code);myfunc(socket); };
+                            document.getElementById("b1").onclick = function() { myfunc_3("b1", socket, code, myID);myfunc(socket); };
+                            document.getElementById("b2").onclick = function() { myfunc_3("b2", socket, code, myID);myfunc(socket); };
+                            document.getElementById("b3").onclick = function() { myfunc_3("b3", socket, code, myID);myfunc(socket); };
+                            document.getElementById("b4").onclick = function() { myfunc_3("b4", socket, code, myID);myfunc(socket); };
+                            document.getElementById("b5").onclick = function() { myfunc_3("b5", socket, code, myID);myfunc(socket); };
+                            document.getElementById("b6").onclick = function() { myfunc_3("b6", socket, code, myID);myfunc(socket); };
+                            document.getElementById("b7").onclick = function() { myfunc_3("b7", socket, code, myID);myfunc(socket); };
+                            document.getElementById("b8").onclick = function() { myfunc_3("b8", socket, code, myID);myfunc(socket); };
+                            document.getElementById("b9").onclick = function() { myfunc_3("b9", socket, code, myID);myfunc(socket); };
                         }
                     }
 
@@ -221,16 +236,17 @@
                         roomCode = code;
                         
                         awaitGameUpdate(socket);
+                        $("#loading-move").hide();
 
-                        document.getElementById("b1").onclick = function() { myfunc_3("b1", socket, code);myfunc(socket); };
-                        document.getElementById("b2").onclick = function() { myfunc_3("b2", socket, code);myfunc(socket); };
-                        document.getElementById("b3").onclick = function() { myfunc_3("b3", socket, code);myfunc(socket); };
-                        document.getElementById("b4").onclick = function() { myfunc_3("b4", socket, code);myfunc(socket); };
-                        document.getElementById("b5").onclick = function() { myfunc_3("b5", socket, code);myfunc(socket); };
-                        document.getElementById("b6").onclick = function() { myfunc_3("b6", socket, code);myfunc(socket); };
-                        document.getElementById("b7").onclick = function() { myfunc_3("b7", socket, code);myfunc(socket); };
-                        document.getElementById("b8").onclick = function() { myfunc_3("b8", socket, code);myfunc(socket); };
-                        document.getElementById("b9").onclick = function() { myfunc_3("b9", socket, code);myfunc(socket); };
+                        document.getElementById("b1").onclick = function() { myfunc_3("b1", socket, code, myID);myfunc(socket); };
+                        document.getElementById("b2").onclick = function() { myfunc_3("b2", socket, code, myID);myfunc(socket); };
+                        document.getElementById("b3").onclick = function() { myfunc_3("b3", socket, code, myID);myfunc(socket); };
+                        document.getElementById("b4").onclick = function() { myfunc_3("b4", socket, code, myID);myfunc(socket); };
+                        document.getElementById("b5").onclick = function() { myfunc_3("b5", socket, code, myID);myfunc(socket); };
+                        document.getElementById("b6").onclick = function() { myfunc_3("b6", socket, code, myID);myfunc(socket); };
+                        document.getElementById("b7").onclick = function() { myfunc_3("b7", socket, code, myID);myfunc(socket); };
+                        document.getElementById("b8").onclick = function() { myfunc_3("b8", socket, code, myID);myfunc(socket); };
+                        document.getElementById("b9").onclick = function() { myfunc_3("b9", socket, code, myID);myfunc(socket); };
                     }
                 });
             });

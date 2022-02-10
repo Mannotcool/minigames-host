@@ -144,23 +144,24 @@ function disableAll() {
 
 //SET FLAG TO 1 FOR PLAYER X, 0 FOR PLAYER 0. DO THIS IN tictactoe.html (based on if player is host (X) or client (0))
 
-
-function myfunc_3(id, socket, code) {
+function myfunc_3(id, socket, code, myID) {
+    
     if (flag == 1 && xTurn == 1) {
         document.getElementById(id).value = "X";
         document.getElementById(id).disabled = true;
 
-        socket.emit("updatePlayers", ["X", id, 0, 1], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn
-        alert("waiting for other player");
+        socket.emit("updatePlayers", ["X", id, 0, 1, myID], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn. myID is for this client's id (update player move)
+        $("#loading-move").show();
+
     } else if (flag == 0 && oTurn == 1) {
         document.getElementById(id).value = "0";
         document.getElementById(id).disabled = true;
 
-
         oTurn = 0;
         xTurn = 1;
-        socket.emit("updatePlayers", ["0", id, 1, 0], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn
-        alert("waiting for other player");
+        socket.emit("updatePlayers", ["0", id, 1, 0, myID], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn
+        $("#loading-move").show();
+
     } else {
         alert("hey buddy, it's not your turn");
     }
@@ -175,24 +176,38 @@ function awaitGameUpdate(socket) {
             xTurn = data[2];
             oTurn = data[3];
 
+            socket.on("updateWait", function() {
+                setTimeout(function() {
+                $("#loading-move").hide();
+                console.log("my turn uwu?");
+                }, 200);
+            });
+
+            
             socket.on("playerWon", xOro => {
                 if (xOro == "X") {
                     clearInterval( i );
-                    document.getElementById('print').innerHTML = "Player X won";
+                    document.getElementById('print').innerHTML = "Playbter X won";
                     disableAll();
                     window.alert('Player X won');
+                    document.getElementById('reset').disabled = false;
                     
                 } else if (xOro == "0") {
                     clearInterval ( i );
                     document.getElementById('print').innerHTML = "Player 0 won";
                     disableAll();
                     window.alert('Player 0 won');
+                    //remove the disabled attribute of the reset button
+                    document.getElementById('reset').disabled = false;
+                    
+                    
                     
                 } else if (xOro == "tie") {
                     clearInterval( i );
                     document.getElementById('print').innerHTML = "Match Tie";
                     disableAll();
                     window.alert('Match Tie');
+                    document.getElementById('reset').disabled = false;
                     
                 } else {
                     return;

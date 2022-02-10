@@ -54,5 +54,5 @@ $( '#button-addon2' ).click(function(){
     var clipboardText = "";
     clipboardText = $( '#inviteurl' ).val(); 
     copyToClipboard( clipboardText );
-    alert( "Copied to Clipboard" );
+    $( '#inviteurl' ).val('Copied!');
 });

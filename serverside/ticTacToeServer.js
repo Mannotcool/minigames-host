@@ -87,6 +87,7 @@ io.on("connection", socket => {
 
 
     socket.on("updatePlayers", (data, roomCode) => {
+        io.to(data[4]).emit("updateWait");
         io.to(roomCode).emit("update", data);
     });
 
