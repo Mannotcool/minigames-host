@@ -8,7 +8,6 @@ const io = require("socket.io")(3000, {
 
 
 var rooms = [];
-var index;
 
 console.log("Server started");
 
@@ -16,12 +15,15 @@ io.on("connection", socket => {
     socket.on("roomQuery", (code, maxPlayers) => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == code) {
+                var index;
 
-                if (rooms[i][2] != undefined) {
-                    if (rooms[i][2].length >= maxPlayers) {
-                        //true if room is full
-                        io.to(socket.id).emit("roomFull", true);
-                        return;
+                if (rooms[i][1] == undefined) {
+                    if (rooms[i][2] != undefined) {
+                        if (rooms[i][2].length >= maxPlayers) {
+                            //true if room is full
+                            io.to(socket.id).emit("roomFull", true);
+                            return;
+                        }
                     }
                 }
 
@@ -36,15 +38,20 @@ io.on("connection", socket => {
                 for (var i = 0; i < rooms.length; i++) {
                     if (rooms[i][0] == code) index = i;
                 }
-                    
-                if (rooms[index][2] == undefined) {
-                    rooms[index][2] = [socket.id];
+
+                if (rooms[index][1] == undefined) {
+                    rooms[index][1] = socket.id;
                 } else {
-                    rooms[index][2].push(socket.id);
+                    if (rooms[index][2] == undefined) {
+                        rooms[index][2] = [socket.id];
+                    } else {
+                        rooms[index][2].push(socket.id);
+                    }
                 }
 
                 //alert host that a player has joined
-                io.to(rooms[index][1]).emit("playerJoin", socket.id);
+                var host = rooms[index][1];
+                io.to(host).emit("playerJoin", socket.id);
 
                 //send back query response
                 io.to(socket.id).emit('roomQueryResp');
@@ -62,41 +69,48 @@ io.on("connection", socket => {
 
     socket.on("disconnect", () => {
         for (var i = 0; i < rooms.length; i++) {
-            if (rooms[i][1] == socket.id) {
-                console.log("Client "+socket.id+" destroyed room "+rooms[i][0]);
-                rooms.splice(i, 1);
-                return;
-            }
-
             if (rooms[i][2] != undefined) {
                 for (var j = 0; j < rooms[i][2].length; j++) {
                     if (rooms[i][2][j] == socket.id) {
                         //alert host that a player has left
-                        io.to(rooms[i][1]).emit("playerLeave", socket.id);
+                        var host = rooms[i][1];
+                        io.to(host).emit("playerLeave", socket.id);
 
                         console.log("Client "+socket.id+" left room "+rooms[i][0]);
                         rooms[i][2].splice(j, 1);
-                        return;
+                        break;
                     }
                 }
             }
-        }
-    });
 
-
-    socket.on("updatePlayers", (data, roomCode) => {
-        var index;
-        for (var i = 0; i < rooms.length; i++) {
-            if (rooms[i][0] == roomCode) {
-                index = i;
-                break;
+            if (rooms[i][1] == socket.id) {
+                rooms[i][1] = undefined;
+                console.log("Host left room "+rooms[i][0]); 
+            }
+            // If there is no players and/or host, remove the room.
+            if (rooms[i][1] == undefined && (rooms[i][2] == undefined || rooms[i][2].length == 0)) {
+                console.log("Someone with the id "+socket.id+" destroyed room "+rooms[i][0]);
+                rooms.splice(i, 1);
+                return;
             }
         }
-        
-        if (socket.id != rooms[index][1]) {
-            io.to(roomCode).emit("update", data);
-        }
     });
+
+    setTimeout(() => {
+        socket.on("updatePlayers", (data, roomCode) => {
+            var index;
+            for (var i = 0; i < rooms.length; i++) {
+                if (rooms[i][0] == roomCode) {
+                    index = i;
+                    break;
+                }
+            }
+            
+            if (socket.id != rooms[index][1]) {
+                io.to(roomCode).emit("update", data);
+            }
+        });
+    }, 5000);
 
 
     socket.on("getRoomInfo", roomCode => {
