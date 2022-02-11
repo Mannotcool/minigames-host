@@ -3,6 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4259135553959443" crossorigin="anonymous"></script>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>minigames-host</title>
@@ -15,28 +16,67 @@
                 font-size: 150%;
                 font-weight: bold;
             }
+
+            #adline {
+                display: flex;
+                flex-direction: row;
+            }
+          
+            #adline:before, #adline:after {
+                content: "";
+                flex: 1 1;
+                border-bottom: 2px solid #dbdada;
+                margin: auto;
+            }
+
+            .button-solid {
+                border: none;
+            }
+
+            button-solid:focus {
+                border: none;
+                outline: none;
+            }
         </style>
     </head>
     <body>
-        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="infoModalLabel">How to play Tic Tac Toe</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <li>The game is played on a grid that's 3 squares by 3 squares.</li>
-                    <li>You are X, your friend (or the computer in this case) is O. Players take turns putting their marks in empty squares.</li>
-                    <li>The first player to get 3 of her marks in a row (up, down, across, or diagonally) is the winner.</li>
-                    <li>When all 9 squares are full, the game is over. (<a href="https://www.exploratorium.edu/brain_explorer/tictactoe.html">Source</a>)</li>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary">Got it!</button>
-                </div>
-              </div>
+    <!-- Modal -->
+    <div class="modal fade" id="adsModal" tabindex="-1" aria-labelledby="adsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="adsModalLabel">About Ads</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          </div>
+            <div class="modal-body">
+                In order to keep the site up, we need money to keep the site running. Sorry to the people who don't like ads, but we need them to keep the site running. Ads on this site follow Google's <a href="https://policies.google.com/">Privacy Policy</a>.
+            </div>
+             <div class="modal-footer">
+               <button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary">Understood.</button>
+             </div>
+           </div>
+         </div>
+       </div>
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="infoModalLabel">How to play Tic Tac Toe</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <li>The game is played on a grid that's 3 squares by 3 squares.</li>
+                <li>You are X, your friend (or the computer in this case) is O. Players take turns putting their marks in empty squares.</li>
+                <li>The first player to get 3 of her marks in a row (up, down, across, or diagonally) is the winner.</li>
+                <li>When all 9 squares are full, the game is over. (<a href="https://www.exploratorium.edu/brain_explorer/tictactoe.html">Source</a>)</li>
+            </div>
+             <div class="modal-footer">
+               <button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary">Got it!</button>
+             </div>
+           </div>
+         </div>
+       </div>
         
     <!-- Modal -->
     <div class="modal fade" id="pXmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="pXmodalLabel" aria-hidden="true">
@@ -112,15 +152,11 @@
             
 
             <!-- Game Instructions -->
-            <p id="ins">Game starts when the host taps on a
-                box<br><br>First Player starts as
-                <b>Player X</b><br>And<br>Second
-                Player as <b>Player 0</b>
-            </p>
+            <h6 id="notifyplayerturn">Clicking on any box will start the game, and notify you of who you are.</h6>
+            <div id="ins"></div>
 
 
 
-            <center>
             <div class="row row-cols-3 g-0 justify-content-md-center">
                 <div class="col-md-2 px-0 ">
                     <input type="text" class="form-control font-weight-bold p-4 g-0" id="b1" readonly>
@@ -154,11 +190,16 @@
                     <input type="text" class="form-control p-4 font-weight-bold g-0" id="b9"  readonly>
                 </div>
             </div>
+            
             <br>
-        </center>
         <div id="loading-move">
             <h3>Waiting for player move... <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div></h3>
         </div>
+        <br>
+        <h1 class="w-50" id="adline"><button href="javascript:void(0);" class="button-solid" style="color: #c0bdbd; font-size: medium;" id="adlink" data-bs-toggle="modal" data-bs-target="#adsModal">Why ads?</button></h1>
+        <img id="ad" src="./assets/demo/ads.jpg" alt="ad">
+        
+
         </div>
        </div>
       </center>

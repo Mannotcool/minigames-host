@@ -54,5 +54,10 @@ $( '#button-addon2' ).click(function(){
     var clipboardText = "";
     clipboardText = $( '#inviteurl' ).val(); 
     copyToClipboard( clipboardText );
-    $( '#inviteurl' ).val('Copied!');
+    $( '#inviteurl' ).val('Copied to clipboard!');
+    // wait 2 seconds then clear the text
+    setTimeout(() => {
+        $( '#inviteurl' ).val(clipboardText);
+        clearTimeout();
+    }, 2000);
 });

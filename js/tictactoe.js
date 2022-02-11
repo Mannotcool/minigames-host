@@ -4,7 +4,7 @@ $(document).ready(function() {
     $("#loading-move").hide();
 });
 
-
+var isPlayerNotifyed = false;
 
 const socket = io.connect('http://localhost:3000');
 var myID;
@@ -43,7 +43,20 @@ socket.on("connect", () => {
             window.location.href = "/tictactoe.html";
         }
     });
+
+    // randomize who goes first via flag
     
+    var random = Math.floor(Math.random() * 2);
+    var p1 = random;
+    var p2 = random;
+
+    if (p1 == p2) {
+        p1 = 1;
+        p2 = 0;
+    }
+
+    console.log("p1: " + p1);
+    console.log("p2: " + p2);
 
     socket.on("roomQueryResp", () => {
         socket.emit("getRoomInfo", code);
@@ -70,7 +83,10 @@ socket.on("connect", () => {
                 
                 console.log('test');
                 //set host player to x
-                flag = 1;
+
+                // random number between 0 and 1
+                
+                flag = p1;
                 roomCode = code;
 
                 awaitGameUpdate(socket);
@@ -93,7 +109,7 @@ socket.on("connect", () => {
             $('#loading-screen').empty();
 
             //set client player to 0
-            flag = 0;
+            flag = p2;
             roomCode = code;
             
             awaitGameUpdate(socket);
@@ -151,7 +167,7 @@ const congratsMsgs = [
 	["My heartfelt congratulations go to you for passing this exam. You are a well-deserved candidate, and I am truly happy for you. Keep going!"],
 	["Your good results will open new doors of opportunities. May you have continued success and happiness. Enjoy what you do, and success will follow as before."],
 	["May God bless you with more success in the coming exams. Congrats on passing this one. You were born to fly, and this exam was a simple milestone to make you fly higher."],
-	["I was worried, but you made me proud anyway. Congratulations on passing the exam with good grades. You keep your winning streak, and it makes my heart fly. Best wishes."]
+	["I was worried, but you made me proud anyway. Congratulations on passing the exam with good grades. You keep your winning streak, and it makes my heart fly. Best wishes.", "you are very sus"]
 ];
 
 // select random entry from array and make a new variable to store it once
@@ -257,18 +273,6 @@ function myfunc(socket) {
         b8 == '0') && (b9 == 'X' || b9 == '0')) {
             socket.emit("playerWin", "tie", roomCode);
     }
-    else {
-
-        // Here, Printing Result
-        if (flag == 1) {
-            document.getElementById('print')
-                .innerHTML = "Player X Turn";
-        }
-        else {
-            document.getElementById('print')
-                .innerHTML = "Player 0 Turn";
-        }
-    }
 }
 
 // Function to reset game
@@ -308,16 +312,27 @@ function myfunc_3(id, socket, code) {
     if (flag == 1 && xTurn == 1) {
         document.getElementById(id).value = "X";
         document.getElementById(id).disabled = true;
-
+        // set ins jquery paragraph to X
+        if (isPlayerNotifyed == false) {
+            $("#ins").append("<p style='font-size: large;'>You are <strong>X</strong></p>");
+            $("#notifyplayerturn").remove();
+            isPlayerNotifyed = true;
+        }
         socket.emit("updatePlayers", ["X", id, 0, 1], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn
         $("#loading-move").show();
 
     } else if (flag == 0 && oTurn == 1) {
         document.getElementById(id).value = "0";
         document.getElementById(id).disabled = true;
-
+        // set ins jquery paragraph to X
+        if (isPlayerNotifyed == false) {
+            $("#ins").append("<p style='font-size: large;'>You are <strong>O</strong></p>");
+            $("#notifyplayerturn").remove();
+            isPlayerNotifyed = true;
+        }
         oTurn = 0;
         xTurn = 1;
+        
         socket.emit("updatePlayers", ["0", id, 1, 0], code); //index 0 is for x or 0, index 1 is the id of the button, index 2 is for xTurn, index 3 is for oTurn
         $("#loading-move").show();
 
