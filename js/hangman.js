@@ -73,11 +73,13 @@
                     });
 
                     startBtn.addEventListener("click", () => {
-                        clearInterval(testInterval); 
+                        if (players.length > 0) {
+                            clearInterval(testInterval); 
 
-                        if (functionCalled == 0) {
-                            exitFuncHost();
-                        } 
+                            if (functionCalled == 0) {
+                                exitFuncHost();
+                            }
+                        }
                     });
                     
                 }, 500);
@@ -106,34 +108,35 @@
                     document.getElementById("delAll").appendChild(submitBtn);
 
 
+
+                    document.getElementById("A").remove();
+                    document.getElementById("B").remove();
+                    document.getElementById("C").remove();
+                    document.getElementById("D").remove();
+                    document.getElementById("E").remove();
+                    document.getElementById("F").remove();
+                    document.getElementById("G").remove();
+                    document.getElementById("H").remove();
+                    document.getElementById("I").remove();
+                    document.getElementById("J").remove();
+                    document.getElementById("K").remove();
+                    document.getElementById("L").remove();
+                    document.getElementById("M").remove();
+                    document.getElementById("N").remove();
+                    document.getElementById("O").remove();
+                    document.getElementById("P").remove();
+                    document.getElementById("Q").remove();
+                    document.getElementById("R").remove();
+                    document.getElementById("S").remove();
+                    document.getElementById("T").remove();
+                    document.getElementById("U").remove();
+                    document.getElementById("V").remove();
+                    document.getElementById("W").remove();
+                    document.getElementById("X").remove();
+                    document.getElementById("Y").remove();
+                    document.getElementById("Z").remove();
                     
 
-                    document.getElementById("A").onclick = function() {chooseLetter("A", "A");};
-                    document.getElementById("B").onclick = function() {chooseLetter("B", "B");};
-                    document.getElementById("C").onclick = function() {chooseLetter("C", "C");};
-                    document.getElementById("D").onclick = function() {chooseLetter("D", "D");};
-                    document.getElementById("E").onclick = function() {chooseLetter("E", "E");};
-                    document.getElementById("F").onclick = function() {chooseLetter("F", "F");};
-                    document.getElementById("G").onclick = function() {chooseLetter("G", "G");};
-                    document.getElementById("H").onclick = function() {chooseLetter("H", "H");};
-                    document.getElementById("I").onclick = function() {chooseLetter("I", "I");};
-                    document.getElementById("J").onclick = function() {chooseLetter("J", "J");};
-                    document.getElementById("K").onclick = function() {chooseLetter("K", "K");};
-                    document.getElementById("L").onclick = function() {chooseLetter("L", "L");};
-                    document.getElementById("M").onclick = function() {chooseLetter("M", "M");};
-                    document.getElementById("N").onclick = function() {chooseLetter("N", "N");};
-                    document.getElementById("O").onclick = function() {chooseLetter("O", "O");};
-                    document.getElementById("P").onclick = function() {chooseLetter("P", "P");};
-                    document.getElementById("Q").onclick = function() {chooseLetter("Q", "Q");};
-                    document.getElementById("R").onclick = function() {chooseLetter("R", "R");};
-                    document.getElementById("S").onclick = function() {chooseLetter("S", "S");};
-                    document.getElementById("T").onclick = function() {chooseLetter("T", "T");};
-                    document.getElementById("U").onclick = function() {chooseLetter("U", "U");};
-                    document.getElementById("V").onclick = function() {chooseLetter("V", "V");};
-                    document.getElementById("W").onclick = function() {chooseLetter("W", "W");};
-                    document.getElementById("X").onclick = function() {chooseLetter("X", "X");};
-                    document.getElementById("Y").onclick = function() {chooseLetter("Y", "Y");};
-                    document.getElementById("Z").onclick = function() {chooseLetter("Z", "Z");};
 
                     document.getElementById("submitBtn").onclick = function() {
                         var chosenWord = document.getElementById("textInput").value;
@@ -154,6 +157,7 @@
 
             function clientFunc() {
                 document.getElementById("delAll").remove();
+
 
                 document.getElementById("A").onclick = function() {chooseLetter("A", "A");};
                 document.getElementById("B").onclick = function() {chooseLetter("B", "B");};
@@ -255,15 +259,13 @@
         }
     }
 
-
-
     var doneLives = 0;
     checkForUpdate = setInterval(function() {
         socket.on("update", data => {
             if (data[0] == 1) {
                 lives = data[1];
                 
-                if (lives == 0 && done == 0) {
+                if (lives < 1 && doneLives == 0) {
                     doneLives = 1;
                     alert("you lost. boo hoo");
                     clearInterval(checkForUpdate);
@@ -278,4 +280,6 @@
             }
         });
     }, 500);
+
 }
+
