@@ -85,8 +85,19 @@ io.on("connection", socket => {
 
 
     socket.on("updatePlayers", (data, roomCode) => {
-        io.to(roomCode).emit("update", data);
+        var index;
+        for (var i = 0; i < rooms.length; i++) {
+            if (rooms[i][0] == roomCode) {
+                index = i;
+                break;
+            }
+        }
+        
+        if (socket.id != rooms[index][1]) {
+            io.to(roomCode).emit("update", data);
+        }
     });
+
 
     socket.on("getRoomInfo", roomCode => {
         for (var i = 0; i < rooms.length; i++) {
